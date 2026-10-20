@@ -1,0 +1,27 @@
+{
+ "request": {
+  "model": "openai/gpt-oss-20b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are an expert data analyst who writes SQLite queries.\nGiven the database schema and a question in Vietnamese, write ONE SQLite query that answers it.\nReturn the query in a single ```sql code block.\n\nBefore writing the query, think step by step inside <thinking></thinking> tags: which tables and\ncolumns you need, how they join, which filters the question implies, and what exactly to return."
+   },
+   {
+    "role": "user",
+    "content": "Schema:\nCREATE TABLE orders (\n  id INTEGER PRIMARY KEY, customer_id INTEGER REFERENCES customers(id), branch_id INTEGER NOT NULL REFERENCES branches(id),\n  staff_id INTEGER REFERENCES staff(id), ordered_at TEXT NOT NULL, channel TEXT NOT NULL, status TEXT NOT NULL);\n/* 3 sample rows of orders:\nid | customer_id | branch_id | staff_id | ordered_at | channel | status\n1 | 491 | 1 | 2 | 2026-01-01 08:06:28 | tại quầy | completed\n2 | 384 | 1 | 4 | 2026-01-01 17:55:48 | grab | completed\n3 | 576 | 2 | 7 | 2026-01-01 14:17:46 | tại quầy | completed */\nCREATE TABLE order_items (\n  id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL REFERENCES orders(id), product_id INTEGER NOT NULL REFERENCES products(id),\n  size TEXT NOT NULL, quantity INTEGER NOT NULL, unit_price INTEGER NOT NULL);\n/* 3 sample rows of order_items:\nid | order_id | product_id | size | quantity | unit_price\n1 | 1 | 3 | M | 1 | 39000\n2 | 2 | 2 | M | 3 | 42000\n3 | 3 | 5 | L | 2 | 44000 */\nCREATE TABLE purchase_orders (id INTEGER PRIMARY KEY, price INTEGER, note TEXT, branch_id INTEGER, staff_id INTEGER, quantity INTEGER);\nCREATE TABLE leave_requests (id INTEGER PRIMARY KEY, updated_at TEXT, note TEXT, amount INTEGER, created_at TEXT, price INTEGER);\nCREATE TABLE utilities_bills (id INTEGER PRIMARY KEY, created_at TEXT, staff_id INTEGER, name TEXT, updated_at TEXT, branch_id INTEGER);\n\nExamples:\nCâu hỏi: Có bao nhiêu khách hàng ở Đà Nẵng?\n```sql\nSELECT COUNT(*) FROM customers WHERE city = 'Đà Nẵng';\n```\nCâu hỏi: Doanh thu tháng 3/2026 của chi nhánh Mây Nguyễn Huệ là bao nhiêu?\n```sql\nSELECT SUM(i.quantity * i.unit_price) FROM order_items i JOIN orders o ON o.id = i.order_id\nJOIN branches b ON b.id = o.branch_id\nWHERE b.name = 'Mây Nguyễn Huệ' AND o.status = 'completed'\n  AND o.ordered_at >= '2026-03-01' AND o.ordered_at < '2026-04-01';\n```\nCâu hỏi: Bao nhiêu ly Bạc xỉu size L đã bán trong tháng 5/2026?\n```sql\nSELECT SUM(i.quantity) FROM order_items i JOIN orders o ON o.id = i.order_id\nJOIN products p ON p.id = i.product_id\nWHERE p.name = 'Bạc xỉu' AND i.size = 'L' AND o.status = 'completed'\n  AND o.ordered_at >= '2026-05-01' AND o.ordered_at < '2026-06-01';\n```\n\nCâu hỏi: Số đơn hàng hoàn thành tháng 9/2026 nhiều hơn tháng 8/2026 bao nhiêu đơn (số âm nếu giảm)?"
+   },
+   {
+    "role": "assistant",
+    "content": "```sql\nSELECT\n  (SELECT COUNT(*) FROM orders\n   WHERE status = 'completed'\n     AND ordered_at >= '2026-09-01' AND ordered_at < '2026-10-01') -\n  (SELECT COUNT(*) FROM orders\n   WHERE status = 'completed'\n     AND ordered_at >= '2026-08-01' AND ordered_at < '2026-09-01') AS difference;\n```\n"
+   },
+   {
+    "role": "user",
+    "content": "Running your query returned 1 rows. First rows:\n(-12,)\n\nCheck carefully whether this result really answers the question. If it does not, return a corrected query; if it does, return the same query. Use one ```sql code block."
+   }
+  ],
+  "temperature": 0,
+  "max_tokens": 8000,
+  "seed": 0
+ },
+ "reply": "```sql\nSELECT\n  (SELECT COUNT(*) FROM orders\n   WHERE status = 'completed'\n     AND ordered_at >= '2026-09-01' AND ordered_at < '2026-10-01') -\n  (SELECT COUNT(*) FROM orders\n   WHERE status = 'completed'\n     AND ordered_at >= '2026-08-01' AND ordered_at < '2026-09-01') AS difference;\n```\n"
+}

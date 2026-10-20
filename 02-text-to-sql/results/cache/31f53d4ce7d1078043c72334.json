@@ -1,0 +1,19 @@
+{
+ "request": {
+  "model": "openai/gpt-oss-20b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are an expert data analyst who writes SQLite queries.\nGiven the database schema and a question in Vietnamese, write ONE SQLite query that answers it.\nReturn the query in a single ```sql code block.\n\nBefore writing the query, think step by step inside <thinking></thinking> tags: which tables and\ncolumns you need, how they join, which filters the question implies, and what exactly to return."
+   },
+   {
+    "role": "user",
+    "content": "Schema:\nCREATE TABLE branches (\n  id INTEGER PRIMARY KEY, name TEXT NOT NULL, city TEXT NOT NULL, opened_at TEXT NOT NULL);\n/* 3 sample rows of branches:\nid | name | city | opened_at\n1 | Mây Nguyễn Huệ | Hồ Chí Minh | 2024-03-01\n2 | Mây Thảo Điền | Hồ Chí Minh | 2024-09-15\n3 | Mây Phú Nhuận | Hồ Chí Minh | 2025-06-01 */\nCREATE TABLE customers (\n  id INTEGER PRIMARY KEY, full_name TEXT NOT NULL, city TEXT NOT NULL, tier TEXT NOT NULL, joined_at TEXT NOT NULL);\n/* 3 sample rows of customers:\nid | full_name | city | tier | joined_at\n1 | Đặng Thị Vy | Hồ Chí Minh | member | 2024-05-01 00:00:00\n2 | Đặng Gia Thảo | Đà Nẵng | member | 2026-07-05 00:00:00\n3 | Võ Bảo Hạnh | Hồ Chí Minh | silver | 2025-07-14 00:00:00 */\nCREATE TABLE purchase_orders (id INTEGER PRIMARY KEY, price INTEGER, note TEXT, branch_id INTEGER, staff_id INTEGER, quantity INTEGER);\nCREATE TABLE timesheets (id INTEGER PRIMARY KEY, created_at TEXT, note TEXT, quantity INTEGER, name TEXT, product_id INTEGER);\nCREATE TABLE leave_requests (id INTEGER PRIMARY KEY, updated_at TEXT, note TEXT, amount INTEGER, created_at TEXT, price INTEGER);\n\nExamples:\nCâu hỏi: Có bao nhiêu khách hàng ở Đà Nẵng?\n```sql\nSELECT COUNT(*) FROM customers WHERE city = 'Đà Nẵng';\n```\nCâu hỏi: Doanh thu tháng 3/2026 của chi nhánh Mây Nguyễn Huệ là bao nhiêu?\n```sql\nSELECT SUM(i.quantity * i.unit_price) FROM order_items i JOIN orders o ON o.id = i.order_id\nJOIN branches b ON b.id = o.branch_id\nWHERE b.name = 'Mây Nguyễn Huệ' AND o.status = 'completed'\n  AND o.ordered_at >= '2026-03-01' AND o.ordered_at < '2026-04-01';\n```\nCâu hỏi: Bao nhiêu ly Bạc xỉu size L đã bán trong tháng 5/2026?\n```sql\nSELECT SUM(i.quantity) FROM order_items i JOIN orders o ON o.id = i.order_id\nJOIN products p ON p.id = i.product_id\nWHERE p.name = 'Bạc xỉu' AND i.size = 'L' AND o.status = 'completed'\n  AND o.ordered_at >= '2026-05-01' AND o.ordered_at < '2026-06-01';\n```\n\nCâu hỏi: Giờ nào trong ngày có nhiều đơn hàng nhất?"
+   }
+  ],
+  "temperature": 0,
+  "max_tokens": 8000,
+  "seed": 0
+ },
+ "reply": "```sql\n-- Giờ trong ngày có số đơn hàng cao nhất (giả sử purchase_orders có cột created_at)\nSELECT \n    strftime('%H', created_at) AS hour,\n    COUNT(*) AS order_count\nFROM purchase_orders\nGROUP BY hour\nORDER BY order_count DESC\nLIMIT 1;\n```\n"
+}

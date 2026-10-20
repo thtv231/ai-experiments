@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 01-frontend-aesthetics/results/cache/
 01-frontend-aesthetics/results/measured.json
+02-text-to-sql/data/*.db
