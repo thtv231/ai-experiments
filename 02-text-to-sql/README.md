@@ -2,7 +2,7 @@
 
 **SQL chạy được nhưng số sai: thử thách 30 câu, 5 cấp độ, 4 power-up, 3 model.**
 
-📺 Video (tiếng Việt): *(link sẽ cập nhật)*
+📺 Video (tiếng Việt): https://youtu.be/9gzg9k_u6J4
 
 ## Thí nghiệm
 
