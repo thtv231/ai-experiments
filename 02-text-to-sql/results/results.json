@@ -3459,15 +3459,11 @@
   "stage": "base",
   "q": 9,
   "level": 2,
-  "correct": true,
-  "sql": "SELECT s.full_name\nFROM staff s\nJOIN branches b ON s.branch_id = b.id\nWHERE b.name = 'Mây Thảo Điền'\n  AND (s.role LIKE '%manager%' OR s.role LIKE '%Quản lý%')",
+  "correct": false,
+  "sql": "SELECT s.full_name AS manager_name\nFROM staff s\nJOIN branches b ON s.branch_id = b.id\nWHERE b.name = 'Mây Thảo Điền'\n  AND (s.role = 'manager' OR s.role = 'Quản lý')",
   "error": null,
-  "rows": [
-   [
-    "Ngô Văn Châu"
-   ]
-  ],
-  "n_rows": 1,
+  "rows": [],
+  "n_rows": 0,
   "tables": null,
   "fix_rounds": 0
  },
@@ -3831,7 +3827,7 @@
   "q": 28,
   "level": 5,
   "correct": true,
-  "sql": "WITH completed_orders AS (\n    SELECT\n        customer_id,\n        COUNT(*) AS order_count\n    FROM orders\n    WHERE status = 'completed'\n      AND strftime('%Y', ordered_at) = '2026'\n    GROUP BY customer_id\n)\nSELECT\n    ROUND(100.0 * SUM(CASE WHEN order_count >= 2 THEN 1 ELSE 0 END) / COUNT(*), 2) AS percentage\nFROM completed_orders",
+  "sql": "WITH orders_2026 AS (\n    SELECT\n        customer_id,\n        COUNT(*) AS completed_cnt\n    FROM orders\n    WHERE status = 'completed'\n      AND strftime('%Y', ordered_at) = '2026'\n    GROUP BY customer_id\n)\nSELECT\n    ROUND(100.0 * SUM(CASE WHEN completed_cnt >= 2 THEN 1 ELSE 0 END) / COUNT(*), 2) AS percentage_of_customers_with_2_or_more\nFROM orders_2026",
   "error": null,
   "rows": [
    [
@@ -4002,7 +3998,7 @@
   "q": 7,
   "level": 2,
   "correct": true,
-  "sql": "SELECT b.name AS branch_name,\n       COUNT(*) AS completed_orders\nFROM orders o\nJOIN branches b ON o.branch_id = b.id\nWHERE o.status = 'completed'\nGROUP BY b.id, b.name\nORDER BY completed_orders DESC\nLIMIT 1",
+  "sql": "SELECT b.name,\n       COUNT(*) AS completed_orders\nFROM orders o\nJOIN branches b ON o.branch_id = b.id\nWHERE o.status = 'completed'\nGROUP BY b.id, b.name\nORDER BY completed_orders DESC\nLIMIT 1",
   "error": null,
   "rows": [
    [
@@ -4334,41 +4330,31 @@
   "q": 25,
   "level": 5,
   "correct": true,
-  "sql": "SELECT branch_id,\n       branch_name,\n       product_id,\n       product_name,\n       total_quantity\nFROM (\n    SELECT b.id          AS branch_id,\n           b.name        AS branch_name,\n           p.id          AS product_id,\n           p.name        AS product_name,\n           SUM(i.quantity) AS total_quantity,\n           ROW_NUMBER() OVER (\n               PARTITION BY b.id\n               ORDER BY SUM(i.quantity) DESC\n           ) AS rn\n    FROM branches      AS b\n    JOIN orders        AS o ON o.branch_id = b.id\n    JOIN order_items   AS i ON i.order_id  = o.id\n    JOIN products      AS p ON p.id        = i.product_id\n    WHERE o.status = 'completed'\n    GROUP BY b.id, p.id\n) AS ranked\nWHERE rn = 1",
+  "sql": "SELECT\n    b.name AS branch_name,\n    p.name AS best_selling_product,\n    t.total_qty\nFROM (\n    SELECT\n        o.branch_id,\n        i.product_id,\n        SUM(i.quantity) AS total_qty,\n        RANK() OVER (PARTITION BY o.branch_id ORDER BY SUM(i.quantity) DESC) AS rnk\n    FROM orders o\n    JOIN order_items i ON i.order_id = o.id\n    WHERE o.status = 'completed'\n    GROUP BY o.branch_id, i.product_id\n) t\nJOIN branches b ON b.id = t.branch_id\nJOIN products p ON p.id = t.product_id\nWHERE t.rnk = 1",
   "error": null,
   "rows": [
    [
-    1,
     "Mây Nguyễn Huệ",
-    1,
     "Trà sữa trân châu",
     304
    ],
    [
-    2,
     "Mây Thảo Điền",
-    1,
     "Trà sữa trân châu",
     240
    ],
    [
-    3,
     "Mây Phú Nhuận",
-    1,
     "Trà sữa trân châu",
     178
    ],
    [
-    4,
     "Mây Hoàn Kiếm",
-    1,
     "Trà sữa trân châu",
     265
    ],
    [
-    5,
     "Mây Cầu Giấy",
-    2,
     "Trà sữa matcha",
     109
    ]
@@ -4791,11 +4777,11 @@
   "q": 18,
   "level": 3,
   "correct": true,
-  "sql": "-- Giờ trong ngày có nhiều đơn hàng nhất (đếm các đơn đã hoàn thành)\nSELECT\n    strftime('%H', ordered_at) AS hour,\n    COUNT(*) AS order_count\nFROM orders\nWHERE status = 'completed'          -- nếu muốn tính toàn bộ đơn, bỏ điều kiện này\nGROUP BY hour\nORDER BY order_count DESC\nLIMIT 1",
+  "sql": "SELECT \n    CAST(strftime('%H', ordered_at) AS INTEGER) AS hour,\n    COUNT(*) AS order_count\nFROM orders\nWHERE status = 'completed'          -- optional: only completed orders\nGROUP BY hour\nORDER BY order_count DESC\nLIMIT 1",
   "error": null,
   "rows": [
    [
-    "09",
+    9,
     301
    ]
   ],
@@ -4843,7 +4829,7 @@
   "q": 21,
   "level": 4,
   "correct": true,
-  "sql": "SELECT SUM(i.quantity * i.unit_price) AS revenue\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nJOIN order_items i ON i.order_id = o.id\nWHERE c.tier = 'gold'\n  AND o.status = 'completed'\n  AND o.ordered_at >= '2026-07-01'\n  AND o.ordered_at <  '2026-08-01'",
+  "sql": "SELECT COALESCE(SUM(i.quantity * i.unit_price), 0) AS revenue\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nJOIN order_items i ON i.order_id = o.id\nWHERE c.tier = 'gold'\n  AND o.status = 'completed'\n  AND o.ordered_at >= '2026-07-01'\n  AND o.ordered_at <  '2026-08-01'",
   "error": null,
   "rows": [
    [
@@ -4860,7 +4846,7 @@
   "q": 22,
   "level": 4,
   "correct": true,
-  "sql": "SELECT AVG(i.unit_price) AS avg_price_per_cup\nFROM order_items i\nJOIN orders o ON o.id = i.order_id\nJOIN products p ON p.id = i.product_id\nWHERE p.name = 'Trà đào cam sả'\n  AND i.size = 'M'\n  AND o.status = 'completed'\n  AND o.ordered_at >= '2026-08-01'\n  AND o.ordered_at <  '2026-09-01'",
+  "sql": "SELECT AVG(i.unit_price) AS avg_price\nFROM order_items i\nJOIN orders o ON o.id = i.order_id\nJOIN products p ON p.id = i.product_id\nWHERE p.name = 'Trà đào cam sả'\n  AND i.size = 'M'\n  AND o.status = 'completed'\n  AND o.ordered_at >= '2026-08-01'\n  AND o.ordered_at <  '2026-09-01'",
   "error": null,
   "rows": [
    [
@@ -5007,7 +4993,7 @@
   "q": 28,
   "level": 5,
   "correct": true,
-  "sql": "SELECT\n    ROUND(100.0 * SUM(CASE WHEN cnt >= 2 THEN 1 ELSE 0 END) / COUNT(*) , 2) AS percentage\nFROM (\n    SELECT customer_id, COUNT(*) AS cnt\n    FROM orders\n    WHERE status = 'completed'\n      AND strftime('%Y', ordered_at) = '2026'\n    GROUP BY customer_id\n) AS sub",
+  "sql": "WITH completed_orders AS (\n    SELECT customer_id, COUNT(*) AS order_count\n    FROM orders\n    WHERE status = 'completed'\n      AND strftime('%Y', ordered_at) = '2026'\n    GROUP BY customer_id\n)\nSELECT ROUND(100.0 * SUM(CASE WHEN order_count >= 2 THEN 1 ELSE 0 END) / COUNT(*), 2) AS percentage\nFROM completed_orders",
   "error": null,
   "rows": [
    [
@@ -5072,7 +5058,7 @@
   "q": 1,
   "level": 1,
   "correct": true,
-  "sql": "SELECT COUNT(*) AS branch_count\nFROM branches",
+  "sql": "SELECT COUNT(*) AS total_branches FROM branches",
   "error": null,
   "rows": [
    [
@@ -5468,7 +5454,7 @@
   "q": 17,
   "level": 3,
   "correct": false,
-  "sql": "SELECT COUNT(*) AS member_count\nFROM customers\nWHERE tier = 'member'\n  AND strftime('%Y', joined_at) = '2026'",
+  "sql": "SELECT COUNT(*) AS num_members_2026\nFROM customers\nWHERE tier = 'member'\n  AND joined_at >= '2026-01-01'\n  AND joined_at <  '2027-01-01'",
   "error": null,
   "rows": [
    [
@@ -5703,7 +5689,7 @@
   "q": 26,
   "level": 5,
   "correct": true,
-  "sql": "SELECT \n    c.full_name,\n    SUM(i.quantity * i.unit_price) AS total_spent\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nJOIN order_items i ON i.order_id = o.id\nWHERE o.status = 'completed'\n  AND o.ordered_at >= '2026-01-01'\n  AND o.ordered_at <  '2027-01-01'\nGROUP BY c.id, c.full_name\nORDER BY total_spent DESC\nLIMIT 3",
+  "sql": "SELECT \n    c.full_name,\n    SUM(i.quantity * i.unit_price) AS total_spent\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nJOIN order_items i ON i.order_id = o.id\nWHERE o.status = 'completed'\n  AND strftime('%Y', o.ordered_at) = '2026'\nGROUP BY c.id, c.full_name\nORDER BY total_spent DESC\nLIMIT 3",
   "error": null,
   "rows": [
    [
@@ -8258,7 +8244,7 @@
   "q": 27,
   "level": 5,
   "correct": true,
-  "sql": "WITH revenue AS (\n    SELECT\n        b.id,\n        b.name,\n        SUM(\n            CASE\n                WHEN o.ordered_at >= '2026-08-01' AND o.ordered_at < '2026-09-01'\n                THEN i.quantity * i.unit_price\n                ELSE 0\n            END\n        ) AS aug_revenue,\n        SUM(\n            CASE\n                WHEN o.ordered_at >= '2026-09-01' AND o.ordered_at < '2026-10-01'\n                THEN i.quantity * i.unit_price\n                ELSE 0\n            END\n        ) AS sep_revenue\n    FROM branches b\n    JOIN orders o ON o.branch_id = b.id\n    JOIN order_items i ON i.order_id = o.id\n    WHERE o.status = 'completed'\n      AND o.ordered_at >= '2026-08-01'\n      AND o.ordered_at < '2026-10-01'\n    GROUP BY b.id, b.name\n)\nSELECT name\nFROM revenue\nWHERE aug_revenue > 0\nORDER BY (sep_revenue - aug_revenue) * 100.0 / aug_revenue DESC\nLIMIT 1",
+  "sql": "WITH revenue AS (\n    SELECT\n        b.id,\n        b.name,\n        SUM(\n            CASE\n                WHEN o.ordered_at >= '2026-08-01'\n                 AND o.ordered_at < '2026-09-01'\n                THEN i.quantity * i.unit_price\n                ELSE 0\n            END\n        ) AS aug_revenue,\n        SUM(\n            CASE\n                WHEN o.ordered_at >= '2026-09-01'\n                 AND o.ordered_at < '2026-10-01'\n                THEN i.quantity * i.unit_price\n                ELSE 0\n            END\n        ) AS sep_revenue\n    FROM branches b\n    JOIN orders o ON o.branch_id = b.id\n    JOIN order_items i ON i.order_id = o.id\n    WHERE o.status = 'completed'\n      AND o.ordered_at >= '2026-08-01'\n      AND o.ordered_at < '2026-10-01'\n    GROUP BY b.id, b.name\n)\nSELECT name\nFROM revenue\nWHERE aug_revenue > 0\nORDER BY ((sep_revenue - aug_revenue) * 100.0) / aug_revenue DESC\nLIMIT 1",
   "error": null,
   "rows": [
    [
@@ -8292,12 +8278,11 @@
   "q": 29,
   "level": 5,
   "correct": true,
-  "sql": "SELECT s.full_name, COUNT(o.id) AS total_orders\nFROM staff s\nJOIN orders o ON o.staff_id = s.id\nWHERE s.role = 'thu ngân' AND o.status = 'completed'\nGROUP BY s.id, s.full_name\nORDER BY total_orders DESC\nLIMIT 1",
+  "sql": "SELECT s.full_name\nFROM staff s\nJOIN orders o ON o.staff_id = s.id\nWHERE s.role = 'thu ngân' AND o.status = 'completed'\nGROUP BY s.id, s.full_name\nORDER BY COUNT(*) DESC\nLIMIT 1",
   "error": null,
   "rows": [
    [
-    "Phạm Hoàng Vy",
-    283
+    "Phạm Hoàng Vy"
    ]
   ],
   "n_rows": 1,

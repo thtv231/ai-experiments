@@ -38,7 +38,7 @@
 | model | base | +examples | +thinking | +rag | +fix |
 |---|---|---|---|---|---|
 | GPT-OSS 120B | 22 | **28** | 28 | 28 | 27 |
-| GPT-OSS 20B | 23 | 23 | **26** | 25 | 25 |
+| GPT-OSS 20B | 22 | 23 | **26** | 25 | 25 |
 | Qwen 3.6 27B | 22 | **28** | 28 | 27 | 27 |
 
 Những gì đọc được từ các câu sai (xem SQL thật trong `results/results.json`):
