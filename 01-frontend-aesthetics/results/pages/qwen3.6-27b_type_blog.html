@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>June Marlowe — Field Notes from the Road</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,600&family=Karla:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5EFE3;
+    --paper-deep:#EDE4D2;
+    --ink:#221B13;
+    --ink-soft:#5C5142;
+    --vermilion:#C14A2B;
+    --teal:#1F5C54;
+    --gold:#B98A2F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Karla',sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(193,74,43,.06), transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(34,27,19,.012) 3px 4px);
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Top ticker ---------- */
+  .tickerbar{
+    border-bottom:1px solid var(--ink);
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .tickerbar .wrap{
+    display:flex;justify-content:space-between;align-items:center;padding:9px 28px;gap:16px;flex-wrap:wrap;
+  }
+  .tickerbar span{opacity:.55;}
+  .dot{color:var(--vermilion);animation:blink 2.4s infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* ---------- Masthead ---------- */
+  header{padding:56px 0 0;}
+  .masthead{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+    border-bottom:3px double var(--ink);
+    padding-bottom:26px;
+  }
+  .portrait{
+    width:96px;height:96px;border-radius:50%;
+    background:
+      radial-gradient(circle at 38% 32%, #E9C9A8 0 26%, transparent 27%),
+      linear-gradient(160deg, #7A4A2F, #3E2417);
+    border:2px solid var(--ink);
+    box-shadow:4px 4px 0 var(--paper-deep), 4px 4px 0 1px var(--ink);
+    flex-shrink:0;
+    position:relative;overflow:hidden;
+  }
+  .portrait::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,.25));
+  }
+  .nameblock h1{
+    font-family:'Fraunces',serif;
+    font-weight:900;
+    font-size:clamp(2.6rem,6vw,4.4rem);
+    line-height:.95;
+    letter-spacing:-.02em;
+  }
+  .nameblock h1 em{
+    font-style:italic;font-weight:300;color:var(--vermilion);
+  }
+  .nameblock p{
+    font-family:'DM Mono',monospace;font-size:12.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink-soft);margin-top:10px;
+  }
+  .stamp{
+    width:118px;height:118px;border-radius:50%;
+    border:2px dashed var(--vermilion);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transform:rotate(12deg);
+    font-family:'DM Mono',monospace;color:var(--vermilion);
+    text-align:center;flex-shrink:0;
+    animation:stampdrift 6s ease-in-out infinite;
+    background:rgba(193,74,43,.04);
+  }
+  .stamp small{font-size:9px;letter-spacing:.3em;}
+  .stamp b{font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1;}
+  .stamp small:last-child{font-size:9px;letter-spacing:.18em;margin-top:4px;}
+  @keyframes stampdrift{0%,100%{transform:rotate(12deg) translateY(0)}50%{transform:rotate(9deg) translateY(-4px)}}
+
+  /* ---------- Nav ---------- */
+  nav{
+    display:flex;gap:36px;align-items:center;
+    border-bottom:1px solid var(--ink);
+    padding:14px 0;
+    font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    flex-wrap:wrap;
+  }
+  nav a{color:var(--ink);text-decoration:none;position:relative;padding:4px 0;}
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--vermilion);
+    transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  nav .now{
+    margin-left:auto;color:var(--teal);display:flex;align-items:center;gap:8px;
+  }
+  nav .now::before{content:"→";color:var(--vermilion);}
+  nav .now i{
+    font-style:normal;width:8px;height:8px;border-radius:50%;background:var(--teal);
+    display:inline-block;animation:blink 2s infinite;
+  }
+
+  /* ---------- The posts ---------- */
+  .journal{padding:64px 0 40px;}
+  .section-label{
+    display:flex;align-items:baseline;gap:18px;margin-bottom:8px;
+  }
+  .section-label h2{
+    font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);font-weight:600;
+    font-variation-settings:"opsz" 144;
+  }
+  .section-label h2 i{font-style:italic;font-weight:300;color:var(--vermilion);}
+  .section-label span{
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .rule{flex:1;height:1px;background:var(--ink);opacity:.25;align-self:center;}
+
+  .post{
+    display:grid;grid-template-columns:340px 1fr;gap:0;
+    border:1.5px solid var(--ink);
+    margin-top:48px;background:var(--paper);
+    box-shadow:8px 8px 0 var(--paper-deep);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .post:hover{
+    transform:translate(-3px,-3px);
+    box-shadow:13px 13px 0 var(--paper-deep);
+  }
+  .post:nth-child(even) .scene{order:2;}
+  .post:nth-child(even):hover{transform:translate(3px,-3px);}
+
+  .scene{
+    position:relative;overflow:hidden;border-bottom:1.5px solid var(--ink);
+    min-height:260px;
+  }
+  .post:nth-child(even) .scene{border-bottom:none;border-left:1.5px solid var(--ink);}
+  .scene .no{
+    position:absolute;top:14px;left:16px;z-index:3;
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.25em;color:#fff;
+    background:rgba(34,27,19,.45);padding:5px 10px;border:1px solid rgba(255,255,255,.35);
+  }
+  .scene .city{
+    position:absolute;bottom:14px;left:16px;z-index:3;
+    font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:1.25rem;color:#fff;
+    text-shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+
+  /* scene 1 — Lisbon sunset */
+  .scene-lisbon{
+    background:linear-gradient(180deg,#3B2A5E 0%,#8C3F58 34%,#D65A3E 62%,#F2A65A 82%,#F7C873 100%);
+  }
+  .scene-lisbon .sun{
+    position:absolute;left:50%;top:44%;width:76px;height:76px;margin-left:-38px;border-radius:50%;
+    background:radial-gradient(circle,#FFF3D6 0 55%,#FFD98A 70%,rgba(255,217,138,0) 72%);
+  }
+  .scene-lisbon .hills{
+    position:absolute;bottom:0;left:0;right:0;height:44%;
+    background:#2B1C38;
+    clip-path:polygon(0 62%,12% 48%,26% 60%,42% 34%,58% 58%,74% 40%,88% 56%,100% 44%,100% 100%,0 100%);
+  }
+  .scene-lisbon .hills::after{
+    content:"";position:absolute;bottom:0;left:0;right:0;height:55%;
+    background:#1A1026;
+    clip-path:polygon(0 70%,20% 52%,38% 72%,60% 44%,80% 68%,100% 55%,100% 100%,0 100%);
+  }
+  .scene-lisbon .lights{
+    position:absolute;bottom:22%;left:0;right:0;height:2px;
+    background:repeating-linear-gradient(90deg,#FFD98A 0 3px,transparent 3px 14px);
+    opacity:.85;
+  }
+
+  /* scene 2 — Kyoto */
+  .scene-kyoto{
+    background:linear-gradient(180deg,#1E2740 0%,#3A3D63 42%,#9C5470 72%,#E38A6D 100%);
+  }
+  .scene-kyoto .moon{
+    position:absolute;right:18%;top:14%;width:48px;height:48px;border-radius:50%;
+    background:#F4E9D0;box-shadow:0 0 34px rgba(244,233,208,.55);
+  }
+  .scene-kyoto .torii{
+    position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:190px;height:150px;
+  }
+  .scene-kyoto .torii::before{
+    content:"";position:absolute;top:6px;left:-10px;right:-10px;height:16px;background:#141019;
+    border-radius:6px;
+  }
+  .scene-kyoto .torii::after{
+    content:"";position:absolute;top:34px;left:0;right:0;height:10px;background:#141019;
+  }
+  .scene-kyoto .torii .leg{
+    position:absolute;bottom:0;top:24px;width:14px;background:#141019;
+  }
+  .scene-kyoto .torii .leg.l{left:22px;transform:skewX(3deg);}
+  .scene-kyoto .torii .leg.r{right:22px;transform:skewX(-3deg);}
+  .scene-kyoto .trees{
+    position:absolute;bottom:0;left:0;right:0;height:26%;
+    background:#101322;
+    clip-path:polygon(0 55%,10% 40%,22% 62%,34% 30%,48% 58%,62% 36%,76% 60%,90% 38%,100% 52%,100% 100%,0 100%);
+  }
+
+  /* scene 3 — Patagonia */
+  .scene-pato{
+    background:linear-gradient(180deg,#7FB2C6 0%,#A8CCD6 40%,#DDE8E4 75%,#F1ECE0 100%);
+  }
+  .scene-pato .peak{
+    position:absolute;bottom:0;left:0;right:0;height:72%;
+    background:linear-gradient(200deg,#3E5C66,#22363E);
+    clip-path:polygon(0 100%,0 48%,18% 78%,33% 12%,48% 66%,63% 26%,80% 72%,100% 40%,100% 100%);
+  }
+  .scene-pato .snow{
+    position:absolute;bottom:0;left:0;right:0;height:72%;
+    background:rgba(245,239,227,.92);
+    clip-path:polygon(30% 12%,33% 2½%,36% 16%,48% 62%,33% 12%,62% 26%);
+    clip-path:polygon(31% 5%,33% 0,37% 12%,46% 12%,47% 8%,48% 20%,100% 100%,0 100%,0 30%);
+  }
+  .scene-pato .snow2{
+    position:absolute;bottom:0;left:0;right:0;height:72%;
+    background:rgba(245,239,227,.9);
+    clip-path:polygon(61% 22%,63% 18%,66% 24%,70% 26%,61% 22%,100% 100%,0 100%,0 60%);
+  }
+  .scene-pato .wind{
+    position:absolute;top:20%;left:8%;width:52%;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);
+    animation:whoosh 5s ease-in-out infinite;
+  }
+  .scene-pato .wind:nth-child(2){top:30%;width:38%;left:34%;animation-delay:1.2s;animation-duration:6.5s;}
+  .scene-pato .wind:nth-child(3){top:12%;width:26%;left:52%;animation-delay:2.4s;animation-duration:7s;}
+  @keyframes whoosh{
+    0%{transform:translateX(-30px);opacity:0;}
+    20%{opacity:.9;} 100%{transform:translateX(90px);opacity:0;}
+  }
+
+  /* post text */
+  .post-body{padding:34px 38px 30px;display:flex;flex-direction:column;}
+  .meta{
+    display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  }
+  .meta .dest{
+    background:var(--ink);color:var(--paper);padding:3px 10px;border:1px solid var(--ink);
+  }
+  .post:nth-child(3) .meta .dest{background:var(--teal);border-color:var(--teal);}
+  .post:nth-child(4) .meta .dest{background:var(--gold);border-color:var(--gold);}
+  .meta .date{color:var(--ink-soft);}
+  .meta .read{color:var(--vermilion);margin-left:auto;}
+  .post h3{
+    font-family:'Fraunces',serif;font-weight:600;font-variation-settings:"opsz" 120;
+    font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.08;margin:18px 0 14px;
+    letter-spacing:-.01em;
+  }
+  .post p.excerpt{
+    color:var(--ink-soft);font-size:1.03rem;font-weight:400;max-width:52ch;
+  }
+  .post p.excerpt::first-letter{
+    font-family:'Fraunces',serif;font-weight:600;font-size:3.1em;float:left;
+    line-height:.82;padding-right:10px;color:var(--vermilion);
+  }
+  .post .more{
+    margin-top:auto;padding-top:24px;align-self:flex-start;
+    font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--vermilion);text-decoration:none;display:inline-flex;align-items:center;gap:10px;
+    border-bottom:1.5px solid transparent;
+    transition:gap .25s ease,border-color .25s ease;
+  }
+  .post:hover .more{gap:16px;border-color:var(--vermilion);}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:3px double var(--ink);margin-top:80px;
+    padding:36px 0 48px;background:var(--ink);color:var(--paper);
+  }
+  footer .wrap{
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  }
+  footer .motto{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:1.35rem;
+  }
+  footer .motto b{color:#F2A65A;font-weight:400;}
+  footer .links{
+    display:flex;gap:26px;font-family:'DM Mono',monospace;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;
+  }
+  footer .links a{color:var(--paper);opacity:.7;text-decoration:none;transition:opacity .2s;}
+  footer .links a:hover{opacity:1;color:#F2A65A;}
+  footer .copy{
+    width:100%;margin-top:22px;font-family:'DM Mono',monospace;font-size:10.5px;
+    letter-spacing:.15em;opacity:.4;text-transform:uppercase;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:780px){
+    .post, .post:nth-child(even){grid-template-columns:1fr;}
+    .post:nth-child(even) .scene{order:0;border-left:none;border-bottom:1.5px solid var(--ink);}
+    .scene{min-height:220px;}
+    .masthead{align-items:flex-start;}
+    .stamp{width:96px;height:96px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="tickerbar">
+    <div class="wrap">
+      <div><span>◈</span> 214 posts &nbsp;·&nbsp; 61 cities &nbsp;·&nbsp; 14 countries</div>
+      <div><span class="dot">●</span> currently en route — on the night train, somewhere over the Alps</div>
+      <div>GMT<span>−</span>1&nbsp;&nbsp;est. 03:14</div>
+    </div>
+  </div>
+
+  <header class="wrap">
+    <div class="masthead">
+      <div class="portrait" role="img" aria-label="Portrait of the writer"></div>
+      <div class="nameblock">
+        <h1>June Marlowe<br><em>Field Notes from the Road</em></h1>
+        <p>Tales of wandering &amp; wayfaring — est. 2016</p>
+      </div>
+      <div class="stamp" aria-hidden="true">
+        <small>AIR MAIL</small>
+        <b>✈</b>
+        <small>POSTMED</small>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <a href="#journal">The Journal</a>
+      <a href="#routes">Routes</a>
+      <a href="#letters">Letters</a>
+      <a href="#about">About June</a>
+      <span class="now">Now: Lisbon</span>
+    </nav>
+  </header>
+
+  <main class="wrap journal" id="journal">
+    <div class="section-label">
+      <h2>Latest <i>dispatches</i></h2>
+      <div class="rule"></div>
+      <span>Vol. IX — Autumn</span>
+    </div>
+
+    <!-- POST 1 -->
+    <article class="post">
+      <div class="scene scene-lisbon" role="img" aria-label="Sunset over Lisbon">
+        <span class="no">No. 214</span>
+        <div class="sun"></div>
+        <div class="hills"></div>
+        <div class="lights"></div>
+        <span class="city">Lisbon, Portugal</span>
+      </div>
+      <div class="post-body">
+        <div class="meta">
+          <span class="dest">Portugal</span>
+          <span class="date">Nov 12, 2025</span>
+          <span class="read">7 min read</span>
+        </div>
+        <h3>Cafés at the End of the Ramp</h3>
+        <p class="excerpt">Lisbon pours its oranges down the hill like slow honey, and I've stopped fighting the physics of it. Three cafés, one tram that's slightly broken, and a pastéis de nata counter that treats pastry like high art — this is what a week without an itinerary actually looks like.</p>
+        <a class="more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- POST 2 -->
+    <article class="post">
+      <div class="scene scene-kyoto" role="img" aria-label="Moon over a torii gate in Kyoto">
+        <span class="no">No. 213</span>
+        <div class="moon"></div>
+        <div class="torii"><div class="leg l"></div><div class="leg r"></div></div>
+        <div class="trees"></div>
+        <span class="city">Kyoto, Japan</span>
+      </div>
+      <div class="post-body">
+        <div class="meta">
+          <span class="dest">Japan</span>
+          <span class="date">Oct 28, 2025</span>
+          <span class="read">11 min read</span>
+        </div>
+        <h3>The Gaps Between Torii</h3>
+        <p class="excerpt">There is a particular silence at 5 p.m. in Gion — the kind you can only hear by not doing anything, which is its own discipline. On walking into empty gates, temples that close early, and the quietest harvest I have ever kept.</p>
+        <a class="more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- POST 3 -->
+    <article class="post">
+      <div class="scene scene-pato" role="img" aria-label="Snow-capped peaks of Patagonia">
+        <span class="no">No. 212</span>
+        <div class="wind"></div>
+        <div class="wind"></div>
+        <div class="wind"></div>
+        <div class="peak"></div>
+        <div class="snow"></div>
+        <div class="snow2"></div>
+        <span class="city">Patagonia, Chile</span>
+      </div>
+      <div class="post-body">
+        <div class="meta">
+          <span class="dest">Chile</span>
+          <span class="date">Sep 30, 2025</span>
+          <span class="read">9 min read</span>
+        </div>
+        <h3>Wind Has a Signature Here</h3>
+        <p class="excerpt">The glacier calved twice while I was eating my sandwich, which made me hold the sandwich a little higher. Notes on blizzard days, a hosteller who knew every peak by name, and the sound the steppe makes between boulders.</p>
+        <a class="more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="motto">“The map is not the territory, but <b>the footnotes are worth keeping.</b>”</div>
+      <div class="links">
+        <a href="#">Newsletter</a>
+        <a href="#">RSS</a>
+        <a href="#">Instagram</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="copy">© 2025 June Marlowe · Written in motion, everywhere &amp; nowhere · No. 214 of many</div>
+    </div>
+  </footer>
+
+</body>
+</html>

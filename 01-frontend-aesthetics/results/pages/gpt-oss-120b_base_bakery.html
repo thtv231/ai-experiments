@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bakery Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #c0392b;
+    --secondary: #e74c3c;
+    --bg: #fafafa;
+    --card-bg: #fff;
+    --text: #333;
+    --border: #ddd;
+    --max-revenue: 1200; /* for chart scaling */
+  }
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+  }
+  h1 { font-weight:600; margin-bottom:1rem; }
+  .dashboard { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .card h2 { font-size:1rem; font-weight:600; margin-bottom:.5rem; }
+  .revenue { font-size:2rem; font-weight:600; color: var(--primary); }
+  .best-sellers ul { list-style:none; }
+  .best-sellers li { display:flex; justify-content:space-between; padding:.3rem 0; border-bottom:1px solid var(--border); }
+  .best-sellers li:last-child { border:none; }
+  .chart { display:flex; align-items:flex-end; height:150px; gap:.5rem; }
+  .bar {
+    flex:1;
+    background: var(--secondary);
+    border-radius:4px 4px 0 0;
+    position:relative;
+    transition: background .3s;
+  }
+  .bar:hover { background:#d35400; }
+  .bar span {
+    position:absolute;
+    bottom:100%;
+    left:50%;
+    transform:translateX(-50%) translateY(-5px);
+    font-size:.8rem;
+    white-space: nowrap;
+  }
+  .days { display:flex; justify-content:space-between; margin-top:.5rem; font-size:.85rem; }
+  .days div { flex:1; text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>Bakery Sales Dashboard</h1>
+
+<div class="dashboard">
+
+  <!-- Today's Revenue -->
+  <section class="card">
+    <h2>Today's Revenue</h2>
+    <div class="revenue">$1,340</div>
+  </section>
+
+  <!-- Best Sellers -->
+  <section class="card best-sellers">
+    <h2>Best Sellers</h2>
+    <ul>
+      <li><span>Sourdough Loaf</span> <strong>45 pcs</strong></li>
+      <li><span>Chocolate Croissant</span> <strong>38 pcs</strong></li>
+      <li><span>Blueberry Muffin</span> <strong>32 pcs</strong></li>
+      <li><span>Cinnamon Roll</span> <strong>28 pcs</strong></li>
+    </ul>
+  </section>
+
+  <!-- Weekly Revenue Chart -->
+  <section class="card">
+    <h2>Weekly Revenue</h2>
+    <div class="chart">
+      <!-- Data: Mon 800, Tue 950, Wed 600, Thu 1100, Fri 1200, Sat 1050, Sun 750 -->
+      <div class="bar" style="--value:66.7%" title="$800"><span>$800</span></div>
+      <div class="bar" style="--value:79.2%" title="$950"><span>$950</span></div>
+      <div class="bar" style="--value:50%"   title="$600"><span>$600</span></div>
+      <div class="bar" style="--value:91.7%" title="$1100"><span>$1,100</span></div>
+      <div class="bar" style="--value:100%"  title="$1200"><span>$1,200</span></div>
+      <div class="bar" style="--value:87.5%" title="$1050"><span>$1,050</span></div>
+      <div class="bar" style="--value:62.5%" title="$750"><span>$750</span></div>
+    </div>
+    <div class="days">
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+      <div>Sun</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Apply the custom --value as height percentages
+  document.querySelectorAll('.bar').forEach(bar => {
+    const val = bar.style.getPropertyValue('--value');
+    bar.style.height = val;
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elena Marlowe — Notes from the Road</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4;
+    --ink:#1a1712;
+    --ink-soft:#4a4438;
+    --rule:#1a1712;
+    --red:#c2331e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Old Standard TT', Georgia, serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:820px;
+    margin:0 auto;
+    padding:0 28px 64px;
+  }
+
+  /* ---------- Masthead ---------- */
+  .top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    padding:22px 0 10px;
+  }
+  .top-bar .est{color:var(--red);}
+  .rule-stack{border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);height:6px;}
+  .masthead{
+    text-align:center;
+    padding:34px 0 8px;
+  }
+  .masthead h1{
+    font-family:'Playfair Display', serif;
+    font-weight:800;
+    font-size:clamp(42px, 8vw, 72px);
+    letter-spacing:-.01em;
+    line-height:1.05;
+  }
+  .masthead h1 .amp{color:var(--red);font-style:italic;font-weight:600;}
+  .masthead .tagline{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .masthead .tagline b{color:var(--red);font-weight:700;}
+  .dateline{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+    margin:26px 0 8px;
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .dateline::before,
+  .dateline::after{
+    content:"";
+    height:1px;
+    flex:1;
+    max-width:120px;
+    background:var(--ink);
+    opacity:.5;
+  }
+
+  /* ---------- Section head ---------- */
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:10px 4px;
+    margin-top:44px;
+  }
+  .section-head h2{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:24px;
+    letter-spacing:.02em;
+  }
+  .section-head span{
+    font-size:12px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .section-head .no{color:var(--red);}
+
+  /* ---------- Posts ---------- */
+  .post{
+    padding:36px 0 34px;
+    border-bottom:1px solid var(--ink);
+  }
+  .post:last-of-type{border-bottom:none;}
+  .entry-no{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .entry-no .num{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:15px;
+  }
+  .entry-no .num b{color:var(--red);font-style:normal;font-weight:700;}
+  .entry-no .loc{
+    font-size:12px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--red);
+  }
+  .post h3{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:clamp(26px, 4.4vw, 34px);
+    line-height:1.15;
+    margin-bottom:14px;
+  }
+  .post h3 a{color:var(--ink);text-decoration:none;}
+  .post h3 a:hover{color:var(--red);}
+  .post .excerpt{
+    max-width:60ch;
+    color:var(--ink-soft);
+    font-size:17.5px;
+  }
+  .post.featured .excerpt::first-letter{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:58px;
+    line-height:.85;
+    float:left;
+    padding:6px 10px 0 0;
+    color:var(--red);
+  }
+  .post-meta{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:18px;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .post-meta .dot{
+    color:var(--red);
+    font-size:10px;
+  }
+  .read-more{
+    margin-top:18px;
+    display:inline-block;
+    font-size:12.5px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid var(--red);
+    padding-bottom:3px;
+    transition:color .15s ease;
+  }
+  .read-more:hover{color:var(--red);}
+  .read-more .arrow{color:var(--red);}
+  .read-more:hover .arrow{color:var(--ink);}
+
+  /* ---------- Footer / Colophon ---------- */
+  .colophon{
+    margin-top:52px;
+    text-align:center;
+    padding-top:28px;
+    border-top:3px solid var(--ink);
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .colophon .ornament{
+    font-family:'Playfair Display', serif;
+    font-size:20px;
+    color:var(--red);
+    letter-spacing:.6em;
+    margin-bottom:14px;
+  }
+  .colophon p{margin-bottom:6px;}
+  .colophon .typeface{
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-top:14px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <span class="est">Established MMXII</span>
+    <span>Letterpress Edition</span>
+    <span>Vol. XII &nbsp;·&nbsp; No. 31</span>
+  </div>
+
+  <div class="rule-stack"></div>
+
+  <header class="masthead">
+    <h1>Elena <span class="amp">&</span> the Road</h1>
+    <p class="tagline">Dispatches <b>·</b> Journeys <b>·</b> Marginalia, Printed Weekly</p>
+  </header>
+
+  <div class="dateline">
+    <span>Friday, the Fourteenth of June, 2024</span>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>Recent Dispatches</h2>
+      <span><span class="no">No.</span> 31 &mdash; 29</span>
+    </div>
+
+    <!-- Post 1 -->
+    <article class="post featured">
+      <div class="entry-no">
+        <span class="loc">Kashmir, India</span>
+      </div>
+      <h3><a href="#">The Houseboats Keep Their Own Weather</a></h3>
+      <p class="excerpt">
+        Above the Dal, the mountains turn silver an hour before the rain arrives, and the
+        houseboat owners know it in their bones before the sky lets on. We were told the
+        storm was three days off; it was, in fact, ninety minutes off, and we learned
+        some things about time in a valley where the almanac is written in cloud.
+      </p>
+      <div class="post-meta">
+        <span>June 2024</span>
+        <span class="dot">&#9679;</span>
+        <span>Sixteen minutes</span>
+        <span class="dot">&#9679;</span>
+        <span>Long Read</span>
+      </div>
+      <a class="read-more" href="#">Continue Reading <span class="arrow">&rarr;</span></a>
+    </article>
+
+    <!-- Post 2 -->
+    <article class="post">
+      <div class="entry-no">
+        <span class="loc">Shimonoseki, Japan</span>
+      </div>
+      <h3><a href="#">Crossing the Strait on a Boat Slower Than Its Name</a></h3>
+      <p class="excerpt">
+        The ferry from Shimonoseki to Nagasaki is a vessel that has opinions about its own
+        schedule. Aboard it I ate onigiri under salt wind, interviewed a sushi chef bound
+        for a Tuesday press conference with the sea, and wrote my jottings by hand because
+        the deck heeled at any angle useful to a laptop.
+      </p>
+      <div class="post-meta">
+        <span>May 2024</span>
+        <span class="dot">&#9679;</span>
+        <span>Nine minutes</span>
+        <span class="dot">&#9679;</span>
+        <span>Field Notes</span>
+      </div>
+      <a class="read-more" href="#">Continue Reading <span class="arrow">&rarr;</span></a>
+    </article>
+
+    <!-- Post 3 -->
+    <article class="post">
+      <div class="entry-no">
+        <span class="loc">Beiro, Portugal</span>
+      </div>
+      <h3><a href="#">A Desert Nobody Advertised</a></h3>
+      <p class="excerpt">
+        North of the Alentejo, past the last sign that pretends to be European, the
+        landscape simply stops negotiating with you. Empty as a held breath. I drove two
+        hours to find one person, ate dinner with three, and understood fully why so many
+        writers have ended their sentences in this exact place.
+      </p>
+      <div class="post-meta">
+        <span>April 2024</span>
+        <span class="dot">&#9679;</span>
+        <span>Twelve minutes</span>
+        <span class="dot">&#9679;</span>
+        <span>Essay</span>
+      </div>
+      <a class="read-more" href="#">Continue Reading <span class="arrow">&rarr;</span></a>
+    </article>
+  </section>
+
+  <footer class="colophon">
+    <div class="ornament">&#10022; &#10022; &#10022;</div>
+    <p><strong>Elena &amp; the Road</strong> — handwritten on the move, set in type at home.</p>
+    <p>Questions, corrections, or recipes from readers: <em>letters@elenatheroad.example</em></p>
+    <p class="typeface">Set in Old Standard TT &amp; Playfair Display &nbsp;&middot;&nbsp; Printed in A4 &amp; A5</p>
+  </footer>
+
+</div>
+</body>
+</html>

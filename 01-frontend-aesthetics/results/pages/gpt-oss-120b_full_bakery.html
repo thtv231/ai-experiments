@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neighbourhood Bakery • Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #D2691E;   /* chocolate */
+    --color-accent:  #F4A460;   /* sandy brown */
+    --bg-light:      #FFF8DC;   /* cornsilk */
+    --text-dark:     #3E2723;   /* deep brown */
+    --chart-bg:      #FAEBD7;   /* antique white */
+  }
+
+  /* General layout */
+  body {
+    margin: 0;
+    font-family: 'Merriweather', serif;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 70%),
+      linear-gradient(135deg, var(--bg-light) 0%, #F5E8C7 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  .dashboard {
+    max-width: 960px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    overflow: hidden;
+    animation: fadeSlide 0.8s ease-out forwards;
+  }
+
+  /* Header */
+  .header {
+    background: var(--color-primary);
+    color: white;
+    padding: 1.5rem 2rem;
+    font-family: 'Lobster', cursive;
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  /* Sections */
+  .section {
+    padding: 1.5rem 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeSlide 0.6s ease-out forwards;
+  }
+  .section:nth-of-type(1) { animation-delay: 0.3s; }
+  .section:nth-of-type(2) { animation-delay: 0.5s; }
+  .section:nth-of-type(3) { animation-delay: 0.7s; }
+
+  .section h2 {
+    margin: 0 0 .5rem;
+    font-size: 1.6rem;
+    color: var(--color-primary);
+  }
+
+  /* Today's revenue */
+  .revenue {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+  }
+  .revenue .amount {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+  .revenue .label {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+  }
+
+  /* Best sellers list */
+  .best-sellers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 1rem;
+  }
+  .seller {
+    background: var(--chart-bg);
+    border-left: 5px solid var(--color-accent);
+    padding: .8rem 1rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+  .seller .name {
+    font-weight: 700;
+    margin-bottom: .3rem;
+  }
+  .seller .units {
+    font-size: .9rem;
+    color: #555;
+  }
+
+  /* Weekly chart */
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: .8rem;
+    height: 180px;
+    padding: 1rem 0;
+    background: var(--chart-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .chart::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        to top,
+        rgba(255,255,255,0.05) 0,
+        rgba(255,255,255,0.05) 2px,
+        transparent 2px,
+        transparent 10px
+      );
+    pointer-events: none;
+  }
+  .bar {
+    flex: 1;
+    background: var(--color-primary);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    transition: transform .2s;
+  }
+  .bar:hover {
+    transform: scaleY(1.07);
+  }
+  .bar::after {
+    content: attr(data-day);
+    position: absolute;
+    bottom: -1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: .8rem;
+    color: var(--text-dark);
+  }
+  .bar span {
+    position: absolute;
+    top: -1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  /* Animations */
+  @keyframes fadeSlide {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="header">Neighbourhood Bakery</div>
+
+    <!-- Today's Revenue -->
+    <section class="section">
+      <h2>Today's Revenue</h2>
+      <div class="revenue">
+        <div class="amount">$1,240</div>
+        <div class="label">USD</div>
+      </div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section class="section">
+      <h2>Best Sellers</h2>
+      <div class="best-sellers">
+        <div class="seller">
+          <div class="name">🥐 Croissant</div>
+          <div class="units">120 sold</div>
+        </div>
+        <div class="seller">
+          <div class="name">🧁 Muffin</div>
+          <div class="units">95 sold</div>
+        </div>
+        <div class="seller">
+          <div class="name">🍞 Sourdough</div>
+          <div class="units">78 sold</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weekly Revenue Chart -->
+    <section class="section">
+      <h2>Weekly Revenue</h2>
+      <div class="chart">
+        <!-- Each bar's height is set via a CSS variable inline style -->
+        <div class="bar" style="--h:70%" data-day="Mon"><span>$820</span></div>
+        <div class="bar" style="--h:55%" data-day="Tue"><span>$650</span></div>
+        <div class="bar" style="--h:80%" data-day="Wed"><span>$960</span></div>
+        <div class="bar" style="--h:60%" data-day="Thu"><span>$720</span></div>
+        <div class="bar" style="--h:75%" data-day="Fri"><span>$890</span></div>
+        <div class="bar" style="--h:90%" data-day="Sat"><span>$1,110</span></div>
+        <div class="bar" style="--h:85%" data-day="Sun"><span>$1,040</span></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Apply the custom height variable to each bar
+    document.querySelectorAll('.bar').forEach(bar => {
+      const h = bar.style.getPropertyValue('--h');
+      bar.style.height = h;
+    });
+  </script>
+</body>
+</html>

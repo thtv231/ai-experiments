@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huddle — Team meetings, scheduled without the back-and-forth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E7;
+    --ink:#17140F;
+    --ink-soft:#4A443A;
+    --orange:#FF5A1F;
+    --orange-deep:#E04A12;
+    --teal:#0E7C66;
+    --teal-deep:#0A5F4E;
+    --butter:#FFD23F;
+    --white:#FFFDF8;
+    --line:#17140F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(1100px 520px at 88% -6%, rgba(255,90,31,.14), transparent 62%),
+      radial-gradient(900px 600px at -10% 34%, rgba(14,124,102,.10), transparent 60%),
+      radial-gradient(rgba(23,20,15,.07) 1px, transparent 1.6px);
+    background-size:auto,auto,26px 26px;
+  }
+  ::selection{background:var(--orange);color:var(--white);}
+
+  /* ---------- shared ---------- */
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:.55rem;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;
+    padding:1rem 1.7rem;border-radius:999px;border:2px solid var(--ink);
+    text-decoration:none;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper);box-shadow:6px 6px 0 var(--orange);}
+  .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--orange);}
+  .btn-ghost{background:transparent;color:var(--ink);box-shadow:6px 6px 0 rgba(23,20,15,.15);}
+  .btn-ghost:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 rgba(23,20,15,.2);}
+  .btn-light{background:var(--orange);color:var(--ink);border-color:var(--orange);box-shadow:6px 6px 0 rgba(0,0,0,.35);}
+  .btn-light:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 rgba(0,0,0,.35);}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:.6rem;
+    font-weight:700;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--teal);}
+  h1,h2,.display{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.02em;}
+
+  /* ---------- entrance animation ---------- */
+  @keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes chipIn{from{opacity:0;transform:translateX(-34px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes toastPop{0%{opacity:0;transform:rotate(-3deg) translateY(16px) scale(.8);}
+    70%{opacity:1;transform:rotate(-3deg) translateY(-4px) scale(1.04);}
+    100%{opacity:1;transform:rotate(-3deg) translateY(0) scale(1);}}
+  @keyframes floaty{0%,100%{transform:rotate(2.5deg) translateY(0);}50%{transform:rotate(2.5deg) translateY(-9px);}}
+  .r1{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:.05s;}
+  .r2{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:.16s;}
+  .r3{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:.28s;}
+  .r4{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:.4s;}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(246,241,231,.86);backdrop-filter:blur(10px);border-bottom:2px solid var(--ink);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;animation:rise .6s ease both;}
+  .logo{display:flex;align-items:center;gap:.65rem;font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;text-decoration:none;color:var(--ink);letter-spacing:-.02em;}
+  .logo-mark{width:34px;height:34px;border-radius:50%;background:var(--orange);border:2px solid var(--ink);position:relative;box-shadow:3px 3px 0 var(--ink);}
+  .logo-mark::before,.logo-mark::after{content:"";position:absolute;background:var(--paper);border-radius:50%;}
+  .logo-mark::before{width:10px;height:10px;left:5px;top:8px;}
+  .logo-mark::after{width:10px;height:10px;right:5px;bottom:8px;}
+  .nav-links{display:flex;gap:2rem;align-items:center;}
+  .nav-links a{font-weight:500;font-size:.95rem;color:var(--ink);text-decoration:none;position:relative;}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:3px;background:var(--orange);transition:width .22s ease;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{padding:.65rem 1.25rem;font-size:.9rem;}
+  @media(max-width:820px){.nav-links a:not(.show){display:none;}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 96px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(2.7rem,5.4vw,4.6rem);line-height:1.03;margin:1.1rem 0 1.4rem;}
+  .wavy{
+    font-style:italic;font-weight:900;color:var(--orange-deep);
+    text-decoration-thickness:.07em;text-underline-offset:.14em;
+    text-decoration:underline wavy var(--orange);
+  }
+  .hero p.lede{font-size:1.18rem;line-height:1.65;color:var(--ink-soft);max-width:33rem;margin-bottom:2rem;}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
+  .proof{display:flex;align-items:center;gap:.9rem;}
+  .avatars{display:flex;}
+  .av{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;
+      font-weight:700;font-size:.75rem;margin-left:-10px;background:var(--white);}
+  .av:first-child{margin-left:0;}
+  .av:nth-child(1){background:var(--butter);}
+  .av:nth-child(2){background:#8ED0C4;}
+  .av:nth-child(3){background:#FFB49B;}
+  .av:nth-child(4){background:var(--ink);color:var(--paper);}
+  .proof small{font-size:.9rem;color:var(--ink-soft);line-height:1.35;}
+  .proof strong{color:var(--ink);}
+
+  /* ---------- calendar mock ---------- */
+  .stage{position:relative;display:flex;justify-content:center;padding:26px 0;}
+  .card-back{position:absolute;top:20px;width:88%;height:88%;border-radius:22px;background:var(--teal);
+    border:2px solid var(--ink);transform:rotate(-5deg);left:2%;}
+  .cal{
+    position:relative;width:min(400px,100%);background:var(--white);border:2px solid var(--ink);
+    border-radius:22px;box-shadow:12px 12px 0 var(--ink);transform:rotate(2.5deg);
+    animation:rise .8s cubic-bezier(.2,.7,.2,1) both .3s, floaty 6s ease-in-out 1.6s infinite;
+    overflow:hidden;
+  }
+  .cal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px 14px;border-bottom:2px dashed rgba(23,20,15,.22);}
+  .cal-date{font-family:'Fraunces',serif;font-weight:900;font-size:1.55rem;letter-spacing:-.01em;}
+  .cal-date small{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.24em;color:var(--teal);}
+  .cal-dots{display:flex;gap:6px;}
+  .cal-dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);display:block;}
+  .cal-dots i:nth-child(1){background:var(--orange);}
+  .cal-dots i:nth-child(2){background:var(--butter);}
+  .cal-dots i:nth-child(3){background:var(--teal);}
+  .cal-body{position:relative;padding:18px 22px 26px;}
+  .slot{position:relative;height:64px;border-bottom:1px dashed rgba(23,20,15,.16);}
+  .slot span{position:absolute;top:2px;left:0;font-size:.66rem;font-weight:700;letter-spacing:.08em;color:rgba(23,20,15,.4);}
+  .chip{
+    position:absolute;left:52px;right:6px;border-radius:12px;border:2px solid var(--ink);
+    padding:9px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;
+    box-shadow:4px 4px 0 rgba(23,20,15,.9);animation:chipIn .55s cubic-bezier(.2,.8,.3,1.2) both;
+  }
+  .chip .t{font-size:.82rem;font-weight:700;line-height:1.25;}
+  .chip .t em{display:block;font-style:normal;font-weight:500;font-size:.7rem;opacity:.75;}
+  .chip .mini-av{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);background:var(--white);
+    display:grid;place-items:center;font-size:.6rem;font-weight:700;flex:none;}
+  .chip-a{top:-4px;height:86px;background:var(--butter);animation-delay:.95s;}
+  .chip-b{top:88px;height:40px;background:#8ED0C4;animation-delay:1.12s;}
+  .chip-b .mini-av{width:26px;height:26px;}
+  .chip-c{top:158px;height:40px;background:var(--orange);animation-delay:1.29s;}
+  .chip-c .t em{opacity:.85;}
+  .toast{
+    position:absolute;bottom:8px;right:-14px;background:var(--ink);color:var(--paper);
+    border-radius:12px;padding:.7rem 1.1rem;font-weight:700;font-size:.85rem;display:flex;gap:.55rem;align-items:center;
+    transform:rotate(-3deg);animation:toastPop .6s cubic-bezier(.2,.8,.3,1.4) both 1.55s;box-shadow:5px 5px 0 var(--teal);
+  }
+  .toast .dot{width:22px;height:22px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-size:.75rem;flex:none;}
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:48px;}
+    .stage{padding:40px 0 30px;}
+    .toast{right:6px;}
+  }
+
+  /* ---------- ticker strip ---------- */
+  .strip{background:var(--ink);color:var(--paper);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    padding:14px 0;overflow:hidden;white-space:nowrap;}
+  .strip-inner{display:inline-block;}
+  .strip span{font-weight:700;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;margin:0 1.6rem;}
+  .strip b{color:var(--orange);font-size:.8rem;}
+
+  /* ---------- features bento ---------- */
+  .features{padding:104px 0 90px;}
+  .sec-head{max-width:640px;margin-bottom:56px;}
+  .sec-head h2{font-size:clamp(2.1rem,3.8vw,3.2rem);line-height:1.08;margin-top:1rem;}
+  .sec-head p{margin-top:1rem;font-size:1.08rem;line-height:1.65;color:var(--ink-soft);}
+  .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;}
+  .cell{
+    background:var(--white);border:2px solid var(--ink);border-radius:20px;padding:28px;
+    box-shadow:7px 7px 0 rgba(23,20,15,.9);transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .cell:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 rgba(23,20,15,.9);}
+  .cell h3{font-family:'Fraunces',serif;font-weight:900;font-size:1.45rem;letter-spacing:-.01em;margin-bottom:.55rem;}
+  .cell p{color:var(--ink-soft);line-height:1.6;font-size:.98rem;}
+  .cell-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    padding:.3rem .7rem;border-radius:999px;border:2px solid var(--ink);margin-bottom:1.1rem;background:var(--butter);}
+  .cell-wide{grid-column:span 7;}
+  .cell-wide{background:var(--ink);color:var(--paper);border-color:var(--ink);box-shadow:7px 7px 0 var(--orange);}
+  .cell-wide p{color:rgba(246,241,231,.75);}
+  .cell-tall{grid-column:span 5;display:flex;flex-direction:column;}
+  .cell-tall .big{font-family:'Fraunces',serif;font-weight:900;font-size:4.2rem;line-height:1;color:var(--orange-deep);margin:auto 0 .5rem;}
+  .cell-tall .unit{font-weight:700;font-size:.95rem;}
+  .cell-half{grid-column:span 5;}
+  .cell-half.b{background:var(--teal);color:var(--paper);box-shadow:7px 7px 0 var(--ink);}
+  .cell-half.b .cell-tag{background:var(--butter);}
+  .cell-half.b p{color:rgba(255,253,248,.85);}
+  /* mini timeline inside wide cell */
+  .timeline{margin-top:1.6rem;display:grid;gap:12px;}
+  .tl-row{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:14px;font-size:.78rem;font-weight:700;letter-spacing:.04em;}
+  .tl-track{position:relative;height:26px;background:rgba(246,241,231,.08);border-radius:8px;border:1.5px solid rgba(246,241,231,.2);}
+  .tl-block{position:absolute;top:2px;bottom:2px;border-radius:6px;}
+  .tl-block.free{background:rgba(255,210,63,.35);border:1.5px dashed var(--butter);}
+  .tl-block.busy{background:rgba(255,90,31,.85);}
+  .tl-chosen{background:var(--butter)!important;border:2px solid var(--paper)!important;}
+  @media(max-width:900px){
+    .cell-wide,.cell-tall,.cell-half{grid-column:span 12;}
+  }
+
+  /* ---------- steps ---------- */
+  .steps{padding:100px 0;}
+  .steps-band{background:var(--white);border:2px solid var(--ink);border-radius:26px;box-shadow:10px 10px 0 var(--teal);padding:64px 56px;}
+  .step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;position:relative;}
+  .step-grid::before{content:"";position:absolute;top:36px;left:8%;right:8%;border-top:3px dashed rgba(23,20,15,.25);z-index:0;}
+  .step{position:relative;z-index:1;}
+  .step-num{font-family:'Fraunces',serif;font-weight:900;font-style:italic;font-size:4.4rem;line-height:1;
+    color:transparent;-webkit-text-stroke:2px var(--ink);width:fit-content;}
+  .step:nth-child(1) .step-num{color:var(--orange);-webkit-text-stroke:0;}
+  .step h3{font-family:'Fraunces',serif;font-weight:900;font-size:1.35rem;margin:1rem 0 .6rem;}
+  .step p{color:var(--ink-soft);line-height:1.6;font-size:.98rem;}
+  .step-ico{width:52px;height:52px;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;
+    margin-top:1.2rem;font-size:1.4rem;box-shadow:4px 4px 0 rgba(23,20,15,.85);}
+  .step:nth-child(1) .step-ico{background:var(--butter);}
+  .step:nth-child(2) .step-ico{background:#8ED0C4;}
+  .step:nth-child(3) .step-ico{background:#FFB49B;}
+  @media(max-width:860px){
+    .step-grid{grid-template-columns:1fr;gap:36px;}
+    .step-grid::before{display:none;}
+    .steps-band{padding:44px 28px;}
+  }
+
+  /* ---------- quote ---------- */
+  .quote-sec{padding:60px 0 110px;}
+  .quote-card{background:var(--orange);border:2px solid var(--ink);border-radius:26px;box-shadow:10px 10px 0 var(--ink);
+    padding:64px;position:relative;overflow:hidden;}
+  .quote-card::before,.quote-card::after{content:"";position:absolute;border-radius:50%;background:rgba(246,241,231,.14);}
+  .quote-card::before{width:260px;height:260px;top:-90px;right:-70px;}
+  .quote-card::after{width:160px;height:160px;bottom:-60px;left:34%;}
+  .quote-mark{font-family:'Fraunces',serif;font-weight:900;font-size:5rem;line-height:.5;color:var(--paper);opacity:.9;}
+  .quote-card blockquote{position:relative;z-index:1;font-family:'Fraunces',serif;font-weight:600;font-style:italic;
+    font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.32;margin-top:20px;max-width:46rem;}
+  .quote-who{position:relative;z-index:1;margin-top:28px;display:flex;align-items:center;gap:.9rem;}
+  .quote-who .av{margin:0;}
+  .quote-who div strong{display:block;font-size:1rem;}
+  .quote-who div span{font-size:.88rem;color:rgba(23,20,15,.7);}
+
+  /* ---------- cta ---------- */
+  .cta{padding:0 0 110px;}
+  .cta-band{background:var(--ink);color:var(--paper);border-radius:26px;border:2px solid var(--ink);
+    box-shadow:10px 10px 0 var(--butter);padding:72px 64px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;position:relative;overflow:hidden;}
+  .cta-band::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(500px 300px at 15% 120%, rgba(255,90,31,.35), transparent 70%),
+               radial-gradient(400px 260px at 90% -30%, rgba(14,124,102,.4), transparent 70%);}
+  .cta-band h2{position:relative;font-size:clamp(2.2rem,4.2vw,3.4rem);line-height:1.05;}
+  .cta-band h2 i{font-style:italic;color:var(--butter);}
+  .cta-band p{position:relative;margin-top:1rem;color:rgba(246,241,231,.75);line-height:1.6;max-width:32rem;}
+  .cta-side{position:relative;display:flex;flex-direction:column;align-items:flex-end;gap:14px;}
+  .cta-note{font-size:.82rem;color:rgba(246,241,231,.6);letter-spacing:.05em;}
+  @media(max-width:860px){.cta-band{grid-template-columns:1fr;padding:48px 30px;}.cta-side{align-items:flex-start;}}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--ink);color:var(--paper);border-top:2px solid var(--ink);}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:34px 0;}
+  .foot .logo{color:var(--paper);}
+  .foot-links{display:flex;gap:1.8rem;flex-wrap:wrap;}
+  .foot-links a{color:rgba(246,241,231,.7);text-decoration:none;font-size:.9rem;font-weight:500;}
+  .foot-links a:hover{color:var(--butter);}
+  .foot small{color:rgba(246,241,231,.45);font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#"><span class="logo-mark"></span>Huddle</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#quote">Customers</a>
+      <a href="#cta" class="btn btn-primary nav-cta show">Try it free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow r1">Scheduling that just works</span>
+      <h1 class="r2">Stop negotiating.<br>Start <span class="wavy">huddling</span>.</h1>
+      <p class="lede r3">Huddle reads every teammate's calendar, finds the slot that actually works, and books it — cutting six emails down to one link. Your to-dos deserve better than 2pm every day.</p>
+      <div class="hero-actions r4">
+        <a href="#cta" class="btn btn-primary">Try it free →</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="proof r4">
+        <div class="avatars">
+          <span class="av">MK</span><span class="av">JT</span><span class="av">AR</span><span class="av">+9</span>
+        </div>
+        <small><strong>4.7 hrs</strong> saved per person, every week —<br>across 12,000+ teams meeting in Huddle.</small>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="card-back" aria-hidden="true"></div>
+      <div class="cal" role="img" aria-label="A Huddle weekly calendar with three meetings automatically scheduled">
+        <div class="cal-head">
+          <div class="cal-date">Tue 14<small>MARCH</small></div>
+          <div class="cal-dots"><i></i><i></i><i></i></div>
+        </div>
+        <div class="cal-body">
+          <div class="slot"><span>09:00</span></div>
+          <div class="slot"><span>10:00</span></div>
+          <div class="slot"><span>11:00</span></div>
+          <div class="slot"><span>12:00</span></div>
+          <div class="slot"><span>13:00</span></div>
+          <div class="slot" style="border-bottom:none;"><span>14:00</span></div>
+          <div class="chip chip-a">
+            <div class="t">Design sync <em>6 attendees · 35 min</em></div>
+            <span class="mini-av">MK</span>
+          </div>
+          <div class="chip chip-b">
+            <div class="t">1:1 with Priya <em>75 min</em></div>
+            <span class="mini-av">PR</span>
+          </div>
+          <div class="chip chip-c">
+            <div class="t">All-hands <em>Whole team</em></div>
+            <span class="mini-av">ALL</span>
+          </div>
+          <div class="toast"><span class="dot">✓</span> No conflicts found</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="strip" aria-hidden="true">
+  <div class="strip-inner">
+    <span>Planned in 41 seconds on average</span><b>✳</b>
+    <span>Works with Google, Outlook &amp; iCal</span><b>✳</b>
+    <span>Timezone-proof since day one</span><b>✳</b>
+    <span>12,000+ teams huddling weekly</span><b>✳</b>
+    <span>Zero “does 3pm work for you?” emails</span><b>✳</b>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why teams switch</span>
+      <h2>The group-chat calendar game, finally over.</h2>
+      <p>Huddle takes the chore out of coordination so your team spends its hours on the work, not the whiteboard of “who's free when.”</p>
+    </div>
+    <div class="bento">
+      <div class="cell cell-wide">
+        <span class="cell-tag" style="background:var(--orange);">Smart slots</span>
+        <h3>It sees everyone's day at once.</h3>
+        <p>Huddle maps every calendar, project deadline and focus block together — then proposes the single slot that keeps the whole team out of trouble.</p>
+        <div class="timeline" aria-hidden="true">
+          <div class="tl-row"><span>9 AM</span>
+            <div class="tl-track">
+              <div class="tl-block busy" style="left:4%;width:18%;"></div>
+              <div class="tl-block free" style="left:30%;width:38%;"></div>
+              <div class="tl-block chosen" style="left:52%;width:20%;"></div>
+              <div class="tl-block busy" style="left:78%;width:16%;"></div>
+            </div>
+          </div>
+          <div class="tl-row"><span>1 PM</span>
+            <div class="tl-track">
+              <div class="tl-block busy" style="left:6%;width:30%;"></div>
+              <div class="tl-block free" style="left:44%;width:26%;"></div>
+              <div class="tl-block chosen" style="left:58%;width:20%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell cell-tall">
+        <span class="cell-tag">The math</span>
+        <div class="big">4.7h</div>
+        <p class="unit">of meeting-scheduling time reclaimed <strong>per person, per week</strong> — measured across Huddle workspaces after 30 days.</p>
+      </div>
+
+      <div class="cell cell-half">
+        <span class="cell-tag">Drop a link</span>
+        <h3>One link to book anything</h3>
+        <p>Share a Huddle URL in Slack, email or a doc. Anyone picks a slot, everyone else gets a single, final answer. Meetings stop moving forever after the first yes.</p>
+      </div>
+
+      <div class="cell cell-half b">
+        <span class="cell-tag">Global by default</span>
+        <h3>Timezone-safe, always</h3>
+        <p>Teams spread across twelve time zones and counting. Huddle quietly avoids 5am surprises and even suggests the fairest stagger when every slot hurts a little.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three taps between you and a final answer.</h2>
+    </div>
+    <div class="steps-band">
+      <div class="step-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Bring everyone in</h3>
+          <p>Connect Google, Outlook or iCal in one click. Huddle quietly maps real availability — including focus time and existing meetings.</p>
+          <div class="step-ico" aria-hidden="true">⚡</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Pick your huddle</h3>
+          <p>“Schedule the design sync, 45 minutes, the whole crew.” In plain words, in a chat. Huddle proposes the best 30-second odds slot.</p>
+          <div class="step-ico" aria-hidden="true">🗓</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>It just happens</h3>
+          <p>The invite lands, everyone confirms in one tap, and reschedules itself politely if life happens. No one says “wait, let me check—”</p>
+          <div class="step-ico" aria-hidden="true">✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-sec" id="quote">
+  <div class="wrap">
+    <div class="quote-card">
+      <div class="quote-mark">“</div>
+      <blockquote>We used to lose an entire Friday afternoon to calendar Tetris. Now we huddle in, ship, and the meetings simply… exist. On time. For everyone.</blockquote>
+      <div class="quote-who">
+        <span class="av" style="background:var(--butter);">MK</span>
+        <div><strong>Mara Kowalski</strong><span>Head of Product, Fieldstone Studio</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2>Your next meeting is<br><i>two taps</i> away.</h2>
+        <p>Free for teams up to 10, no credit card, connected in under two minutes. Your calendar will notice the difference by Monday.</p>
+      </div>
+      <div class="cta-side">
+        <a href="#" class="btn btn-light">Start huddling free →</a>
+        <span class="cta-note">12,000+ teams · 4.9★ average · cancel anytime</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#"><span class="logo-mark"></span>Huddle</a>
+    <div class="foot-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#quote">Customers</a>
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+    </div>
+    <small>© 2025 Huddle Inc. Made for teams who'd rather be working.</small>
+  </div>
+</footer>
+
+</body>
+</html>

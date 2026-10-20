@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huddle - Schedule Team Meetings</title>
+    <link href="https://fonts.googleapis.com/css2|Playfair+Display:wght@700&|Source+Sans+Pro:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-bg: linear-gradient(to right, #1a1a2e, #16213e);
+            --dominant-color: #0f3460;
+            --accent-color: #e94560;
+            --text-color: #ffffff;
+            --subtext-color: #cccccc;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--main-bg);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 600px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s forwards;
+            animation-delay: 1s;
+        }
+        .cta-button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+            animation-delay: 1.5s;
+        }
+        .cta-button:hover {
+            background-color: #ff6f61;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Huddle!</h1>
+    <p>Your ultimate app for scheduling team meetings seamlessly. Focus on what matters and let us handle the rest.</p>
+    <button class="cta-button">Get Started</button>
+</body>
+</html>

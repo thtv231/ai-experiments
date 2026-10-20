@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Sales Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #6c4c4c;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        .chart {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, #ffccbc 0%, #ffabab 100%);
+            border-radius: 8px;
+            position: relative;
+            margin-top: 20px;
+        }
+        .bar {
+            position: absolute;
+            bottom: 0;
+            background-color: #ff7043;
+            border-radius: 5px;
+        }
+        .best-sellers {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .best-sellers li {
+            margin: 10px 0;
+            font-weight: 700;
+        }
+        .revenue {
+            font-size: 2em;
+            color: #2e7d32;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bakery Sales Dashboard</h1>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Today's Revenue</h2>
+            <p class="revenue">$250</p>
+        </div>
+        <div class="card">
+            <h2>Best Sellers</h2>
+            <ul class="best-sellers">
+                <li>Baguette</li>
+                <li>Chocolate Croissant</li>
+                <li>Blueberry Muffin</li>
+            </ul>
+        </div>
+    </div>
+    <div class="card chart">
+        <h2>Weekly Revenue Chart</h2>
+        <div class="bar" style="width: 20%; height: 50%; left: 0%;"></div>
+        <div class="bar" style="width: 20%; height: 70%; left: 25%;"></div>
+        <div class="bar" style="width: 20%; height: 40%; left: 50%;"></div>
+        <div class="bar" style="width: 20%; height: 60%; left: 75%;"></div>
+        <div class="bar" style="width: 20%; height: 30%; left: 100%;"></div>
+    </div>
+</body>
+</html>

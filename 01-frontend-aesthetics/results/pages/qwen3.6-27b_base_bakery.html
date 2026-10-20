@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunrise Bakery — Sales Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --paper: #fffdf9;
+    --crust: #c98a3d;
+    --crust-dark: #a06a28;
+    --chocolate: #4a3524;
+    --milk: #f5ead9;
+    --berry: #b5476b;
+    --sage: #7d9b6a;
+    --shadow: 0 10px 30px rgba(74, 53, 36, 0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(201, 138, 61, 0.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(181, 71, 107, 0.07), transparent 40%),
+      var(--cream);
+    color: var(--chocolate);
+    min-height: 100vh;
+    padding: 32px 20px 48px;
+  }
+
+  .dashboard {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, var(--crust), var(--crust-dark));
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #8a745c;
+    font-weight: 500;
+  }
+
+  .date-pill {
+    background: var(--paper);
+    border: 1px solid #ecdcc4;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--crust-dark);
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- Grid ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid #f0e3cd;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card .hint {
+    font-size: 12px;
+    color: #a3907a;
+    margin-bottom: 18px;
+  }
+
+  /* ---------- Revenue card ---------- */
+  .revenue-card {
+    background: linear-gradient(160deg, #fff8ee, #faeddb);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .revenue-card::after {
+    content: "🥐";
+    position: absolute;
+    font-size: 110px;
+    opacity: 0.08;
+    right: -14px;
+    bottom: -20px;
+    transform: rotate(-20deg);
+  }
+
+  .revenue-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--crust-dark);
+    line-height: 1.1;
+    margin: 8px 0 10px;
+  }
+
+  .revenue-amount .cents {
+    font-size: 26px;
+    vertical-align: top;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  .badge.up {
+    background: rgba(125, 155, 106, 0.16);
+    color: #4f7040;
+  }
+
+  .badge.cups {
+    background: rgba(201, 138, 61, 0.14);
+    color: var(--crust-dark);
+  }
+
+  /* ---------- Best sellers ---------- */
+  .seller {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px dashed #ecdcc4;
+  }
+
+  .seller:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .seller .icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--milk);
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+  }
+
+  .seller .name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .seller .name small {
+    display: block;
+    font-weight: 500;
+    font-size: 11px;
+    color: #a3907a;
+  }
+
+  .bar-track {
+    grid-column: 2 / 4;
+    height: 5px;
+    border-radius: 99px;
+    background: #f3e8d3;
+    overflow: hidden;
+    margin-top: 2px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--crust), var(--crust-dark));
+  }
+
+  .seller-top .bar-fill {
+    background: linear-gradient(90deg, var(--berry), #d96a8d);
+  }
+
+  .seller .price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--crust-dark);
+    white-space: nowrap;
+  }
+
+  .rank {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #c9b491;
+  }
+
+  /* ---------- Weekly chart (pure CSS) ---------- */
+  .chart-card { grid-column: span 1; }
+
+  @media (max-width: 900px) {
+    .chart-card { grid-column: span 1; }
+  }
+
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 210px;
+    padding-top: 20px;
+  }
+
+  .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bar {
+    width: 70%;
+    max-width: 40px;
+    border-radius: 10px 10px 6px 6px;
+    background: linear-gradient(180deg, var(--crust) 0%, var(--crust-dark) 100%);
+    position: relative;
+    transition: filter 0.2s;
+  }
+
+  .bar .value {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--crust-dark);
+    white-space: nowrap;
+  }
+
+  .col.today .bar {
+    background: linear-gradient(180deg, var(--berry) 0%, #8e3552 100%);
+    box-shadow: 0 6px 16px rgba(181, 71, 107, 0.35);
+  }
+
+  .col.today .bar .value { color: #8e3552; }
+
+  .bar::before {
+    /* rising animation */
+    content: "";
+  }
+
+  @keyframes grow {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
+
+  .bar {
+    transform-origin: bottom;
+    animation: grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar { animation: none; }
+  }
+
+  .labels {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .labels span {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #a3907a;
+  }
+
+  .labels span.today-label { color: var(--berry); }
+
+  /* ---------- Weekly stats strip ---------- */
+  .stat-strip {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .stat {
+    background: var(--paper);
+    border: 1px solid #f0e3cd;
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #a3907a;
+  }
+
+  .stat .value {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  .stat .sub {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .sub.up { color: var(--sage); }
+  .sub.down { color: var(--berry); }
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <header>
+    <div class="brand">
+      <div class="logo">🥖</div>
+      <div>
+        <h1>Sunrise Bakery</h1>
+        <div class="subtitle">Neighbourhood Sales Dashboard</div>
+      </div>
+    </div>
+    <div class="date-pill">📅 Thursday, May 16 · 9:42 AM</div>
+  </header>
+
+  <div class="grid">
+
+    <!-- Today's revenue -->
+    <section class="card revenue-card">
+      <h2>💰 Today's Revenue</h2>
+      <p class="hint">Since opening — 6:00 AM</p>
+      <div class="revenue-amount">$1,284<span class="cents">.60</span></div>
+      <div class="badge-row">
+        <span class="badge up">▲ 22% vs. yesterday</span>
+        <span class="badge cups">247 cups of coffee</span>
+      </div>
+    </section>
+
+    <!-- Best sellers -->
+    <section class="card">
+      <h2>🏆 Best Sellers</h2>
+      <p class="hint">By units sold today</p>
+
+      <div class="seller seller-top">
+        <div class="icon">🥐</div>
+        <div class="name">Butter Croissant <small>The usual morning champion</small></div>
+        <div class="price">$4.50 · 86</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      </div>
+
+      <div class="seller">
+        <div class="icon">🍕</div>
+        <div class="name">Farmhouse Sourdough (1/2) <small>Baked at 7 AM</small></div>
+        <div class="price">$6.00 · 54</div>
+        <div class="bar-track"><div class="bar-fill" style="width:63%"></div></div>
+      </div>
+
+      <div class="seller">
+        <div class="icon">🌮</div>
+        <div class="name">Cinnamon Roll <small>Sticky, gooey, legendary</small></div>
+        <div class="price">$4.25 · 41</div>
+        <div class="bar-track"><div class="bar-fill" style="width:48%"></div></div>
+      </div>
+
+      <div class="seller">
+        <div class="icon">🧁</div>
+        <div class="name">Lemon Poppy Loaf (slice) <small>Weekend favorite</small></div>
+        <div class="price">$3.75 · 33</div>
+        <div class="bar-track"><div class="bar-fill" style="width:38%"></div></div>
+      </div>
+
+      <div class="seller">
+        <div class="icon">🍪</div>
+        <div class="name">Marbled Chocolate Cookie <small>Doubles up on Fridays</small></div>
+        <div class="price">$3.25 · 21</div>
+        <div class="bar-track"><div class="bar-fill" style="width:24%"></div></div>
+      </div>
+    </section>
+
+    <!-- Weekly chart, pure CSS -->
+    <section class="card chart-card">
+      <h2>📈 Weekly Revenue</h2>
+      <p class="hint">Last 7 days · $5,642 total</p>
+
+      <div class="chart" role="img" aria-label="Bar chart of daily revenue: Monday 720, Tuesday 815, Wednesday 934, Thursday 1285, Friday 1490, Saturday 1556, Sunday 1360">
+        <div class="col"><div class="bar" style="height:46%; animation-delay:0.05s"><span class="value">$720</span></div></div>
+        <div class="col"><div class="bar" style="height:52%; animation-delay:0.15s"><span class="value">$815</span></div></div>
+        <div class="col"><div class="bar" style="height:60%; animation-delay:0.25s"><span class="value">$934</span></div></div>
+        <div class="col today"><div class="bar" style="height:83%; animation-delay:0.35s"><span class="value">$1,285</span></div></div</div>
+        <div class="col"><div class="bar" style="height:95%; animation-delay:0.45s"><span class="value">$1,490</span></div></div>
+        <div class="col"><div class="bar" style="height:100%; animation-delay:0.55s"><span class="value">$1,556</span></div></div>
+        <div class="col"><div class="bar" style="height:87%; animation-delay:0.65s"><span class="value">$1,360</span></div></div>
+      </div>
+
+      <div class="labels">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span class="today-label">Thu ●</span>
+        <span>Fri</span>
+        <span>Sat</span>
+        <span>Sun</span>
+      </div>
+    </section>
+
+    <!-- Stat strip -->
+    <section class="stat-strip">
+      <div class="stat">
+        <div class="label">Avg. Order</div>
+        <div class="value">$10.92</div>
+        <div class="sub up">▲ 4% this week</div>
+      </div>
+      <div class="stat">
+        <div class="label">Orders Today</div>
+        <div class="value">118</div>
+        <div class="sub up">▲ 14 vs. yesterday</div>
+      </div>
+      <div class="stat">
+        <div class="label">Coffee Runs</div>
+        <div class="value">247</div>
+        <div class="sub up">▲ 8% this week</div>
+      </div>
+      <div class="stat">
+        <div class="label">Peaks at</div>
+        <div class="value">8–9 AM</div>
+        <div class="sub down">Queue of ~9 regulars</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>

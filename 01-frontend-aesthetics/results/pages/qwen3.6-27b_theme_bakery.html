@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Corner Crumb — Sales Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e3;
+    --paper-deep: #efe8d5;
+    --ink: #1a1712;
+    --ink-soft: #4a4438;
+    --red: #c8391f;
+    --rule: #1a1712;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(0,0,0,0.025), transparent 60%),
+      radial-gradient(ellipse at 85% 90%, rgba(0,0,0,0.03), transparent 55%);
+    color: var(--ink);
+    font-family: 'Libre Baskerville', serif;
+    line-height: 1.55;
+    padding: 48px 20px;
+  }
+
+  .sheet {
+    max-width: 960px;
+    margin: 0 auto;
+    border: 3px double var(--ink);
+    padding: 40px 48px 56px;
+    background: transparent;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead { text-align: center; }
+
+  .masthead .est {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(38px, 6vw, 62px);
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+  }
+
+  .masthead .sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  .masthead .date-line {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 6px 22px;
+    border: 1px solid var(--ink);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .masthead .date-line .dot { color: var(--red); }
+
+  /* ---------- Rules ---------- */
+  .rule-triple { border: none; margin: 28px 0; }
+  .rule-triple.thick { border-top: 3px solid var(--ink); }
+  .rule-triple.thin { border-top: 1px solid var(--ink); margin-top: -6px; }
+
+  /* ---------- Section headings ---------- */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2 .no {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+  }
+
+  /* ---------- Revenue ---------- */
+  .revenue {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .revenue .big {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(52px, 8vw, 84px);
+    line-height: 1;
+  }
+  .revenue .big .cents { font-size: 0.45em; font-weight: 700; }
+  .revenue .delta {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .revenue .delta .up { color: var(--red); font-weight: 700; }
+  .revenue .delta span { color: var(--ink-soft); }
+
+  .revenue .minis {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .revenue .mini {
+    padding: 12px 22px;
+    text-align: right;
+    font-family: 'Courier Prime', monospace;
+  }
+  .revenue .mini + .mini { border-left: 1px solid var(--ink); }
+  .revenue .mini .label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .revenue .mini .value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .revenue .mini .value .accent { color: var(--red); }
+
+  /* ---------- Grid ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 44px;
+  }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; gap: 36px; }
+    .sheet { padding: 28px 22px 40px; }
+  }
+
+  /* ---------- Best sellers ---------- */
+  .sellers ol {
+    list-style: none;
+    counter-reset: best;
+  }
+  .sellers li {
+    counter-increment: best;
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .sellers li:last-child { border-bottom: 3px double var(--ink); }
+
+  .sellers li::before {
+    content: counter(best, decimal-leading-zero);
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .sellers .name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .sellers .note {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: block;
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+  .sellers .price {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .sellers .price small {
+    display: block;
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+
+  /* ---------- Chart ---------- */
+  .chart-wrap { padding-top: 6px; }
+
+  .chart {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: end;
+    gap: 14px;
+    height: 260px;
+    border-bottom: 2px solid var(--ink);
+    border-left: 1px solid var(--ink);
+    padding: 0 8px;
+  }
+
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .bar-value {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 46px;
+    background: var(--ink-soft);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      currentColor, currentColor 2px,
+      transparent 2px, transparent 5px
+    );
+    color: var(--ink-soft);
+    border-top: 3px solid var(--ink);
+    position: relative;
+  }
+
+  .bar-col.today .bar {
+    color: var(--red);
+    border-top-color: var(--red);
+  }
+  .bar-col.today .bar-value { color: var(--red); }
+
+  .chart-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 14px;
+    padding: 0 8px;
+    margin-top: 10px;
+  }
+  .chart-labels span {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .chart-labels span.today { color: var(--red); font-weight: 700; }
+
+  .chart-caption {
+    margin-top: 22px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chart-caption .swatch {
+    width: 14px; height: 10px;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink);
+  }
+  .chart-caption .swatch.red {
+    background: var(--red);
+    border-color: var(--red);
+  }
+  .chart-caption .sep { margin: 0 4px; }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .footer .stamp {
+    border: 2px solid var(--red);
+    color: var(--red);
+    padding: 5px 16px;
+    font-weight: 700;
+    transform: rotate(-2deg);
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <!-- Masthead -->
+    <header class="masthead">
+      <p class="est">Est. 1962 · Flour, Salt &amp; patience</p>
+      <h1>The Corner Crumb</h1>
+      <p class="sub">Neighbourhood Bakery — Daily Sales Ledger</p>
+      <div class="date-line">Tue, 14 May <span class="dot">✳</span> Closed 8:30 PM</div>
+    </header>
+
+    <hr class="rule-triple thick">
+    <hr class="rule-triple thin">
+
+    <!-- Today's Revenue -->
+    <section class="revenue">
+      <div>
+        <h2><span class="no">§1</span> Today&rsquo;s Revenue</h2>
+        <p class="big">$1,284<span class="cents">.50</span></p>
+        <p class="delta"><span class="up">▲ 12.4%</span> <span>vs. Tuesday last week</span></p>
+      </div>
+      <div class="minis">
+        <div class="mini">
+          <div class="label">Loaves</div>
+          <div class="value">146</div>
+        </div>
+        <div class="mini">
+          <div class="label">Pastry</div>
+          <div class="value">98</div>
+        </div>
+        <div class="mini">
+          <div class="label">Café</div>
+          <div class="value"><span class="accent">$312</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule-triple thick">
+    <hr class="rule-triple thin">
+
+    <!-- Main grid -->
+    <div class="grid">
+
+      <!-- Best sellers -->
+      <section class="sellers">
+        <h2><span class="no">§2</span> Best Sellers</h2>
+        <ol>
+          <li>
+            <div>
+              <span class="name">Old-Town Sourdough</span>
+              <span class="note">48 sold · sold out by 5:10 PM</span>
+            </div>
+            <div class="price">$7.50<small>each</small></div>
+          </li>
+          <li>
+            <div>
+              <span class="name">Cinnamon Cardamom Roll</span>
+              <span class="note">34 sold · new weekend favourite</span>
+            </div>
+            <div class="price">$4.25<small>each</small></div>
+          </li>
+          <li>
+            <div>
+              <span class="name">Almond Croissant</span>
+              <span class="note">29 sold · short on marzipan</span>
+            </div>
+            <div class="price">$3.90<small>each</small></div>
+          </li>
+          <li>
+            <div>
+              <span class="name">Fig &amp; Orange Focaccia</span>
+              <span class="note">18 sold · oven #2 batch two</span>
+            </div>
+            <div class="price">$6.00<small>each</small></div>
+          </li>
+          <li>
+            <div>
+              <span class="name">House Coffee</span>
+              <span class="note">112 cups · mild roast, low stock</span>
+            </div>
+            <div class="price">$3.10<small>per cup</small></div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Weekly chart -->
+      <section class="chart-wrap">
+        <h2><span class="no">§3</span> This Week at a Glance</h2>
+        <div class="chart" role="img" aria-label="Bar chart of daily revenue from Thursday to Tuesday: 986, 1044, 1305 Saturday, 1422 Sunday, 731, 862, 1285 today.">
+          <div class="bar-col">
+            <span class="bar-value">$986</span>
+            <div class="bar" style="height: 62%;"></div>
+          </div>
+          <div class="bar-col">
+            <span class="bar-value">$1,044</span>
+            <div class="bar" style="height: 68%;"></div>
+          </div>
+          <div class="bar-col">
+            <span class="bar-value">$1,305</span>
+            <div class="bar" style="height: 81%;"></div>
+          </div>
+          <div class="bar-col">
+            <span class="bar-value">$1,422</span>
+            <div class="bar" style="height: 94%;"></div>
+          </div>
+          <div class="bar-col">
+            <span class="bar-value">$731</span>
+            <div class="bar" style="height: 45%;"></div>
+          </div>
+          <div class="bar-col">
+            <span class="bar-value">$862</span>
+            <div class="bar" style="height: 53%;"></div>
+          </div>
+          <div class="bar-col today">
+            <span class="bar-value">$1,285</span>
+            <div class="bar" style="height: 80%;"></div>
+          </div>
+        </div>
+        <div class="chart-labels">
+          <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span><span>Tue</span><span class="today">Today</span>
+        </div>
+        <p class="chart-caption">
+          <span class="swatch"></span> Daily take
+          <span class="sep">·</span>
+          <span class="swatch red"></span> Today
+          <span class="sep">·</span> Week total: $7,630
+        </p>
+      </section>
+
+    </div>
+
+    <hr class="rule-triple thick">
+    <hr class="rule-triple thin">
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Balanced &amp; filed by the head baker</span>
+      <span class="stamp">Settled ✳ No. 04871</span>
+    </footer>
+
+  </div>
+</body>
+</html>

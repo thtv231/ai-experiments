@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Long Way Round — Dispatches by Nora Callis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4eee1;
+    --paper-deep:#eae1cd;
+    --ink:#1e2a2d;
+    --ink-soft:#43524f;
+    --terracotta:#bf4d28;
+    --terracotta-deep:#9c3a1b;
+    --sage:#7d8b6f;
+    --night:#22344c;
+    --plum:#5a3a52;
+    --line:#c9bda3;
+    --display:"Fraunces", serif;
+    --body:"Newsreader", Georgia, serif;
+    --mono:"IBM Plex Mono", monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:1.05rem;
+    line-height:1.6;
+    /* dotted cartographic grid */
+    background-image:
+      radial-gradient(rgba(30,42,45,.08) 1px, transparent 1.4px),
+      linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,0) 40%);
+    background-size: 26px 26px, 100% 100%;
+  }
+
+  /* ---------- entrance ---------- */
+  @keyframes rise{
+    from{opacity:0; transform:translateY(26px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes stampIn{
+    0%{opacity:0; transform:rotate(-14deg) scale(1.6);}
+    70%{opacity:1; transform:rotate(-14deg) scale(.94);}
+    100%{opacity:1; transform:rotate(-8deg) scale(1);}
+  }
+  @keyframes drawPath{ to{ stroke-dashoffset:0; } }
+  @keyframes marquee{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @keyframes blink{ 50%{opacity:.25;} }
+  .rise{ opacity:0; animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .d1{animation-delay:.08s} .d2{animation-delay:.2s} .d3{animation-delay:.34s}
+  .d4{animation-delay:.5s} .d5{animation-delay:.66s} .d6{animation-delay:.82s}
+
+  /* ---------- top ticker ---------- */
+  .ticker{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.06em;
+    overflow:hidden;
+    border-bottom:1px solid var(--ink);
+    height:2.2rem;
+    display:flex; align-items:center;
+  }
+  .ticker .label{
+    flex:0 0 auto; padding:0 1rem;
+    background:var(--terracotta);
+    color:#fff; height:100%;
+    display:flex; align-items:center;
+    font-weight:500; text-transform:uppercase;
+  }
+  .ticker .label::before{
+    content:""; display:inline-block; width:.5rem; height:.5rem;
+    background:#fff; border-radius:50%; margin-right:.55rem;
+    animation:blink 1.6s infinite;
+  }
+  .marquee{ flex:1; overflow:hidden; white-space:nowrap; }
+  .marquee span{
+    display:inline-block; padding-left:100%;
+    animation:marquee 38s linear infinite;
+  }
+  .marquee i{ font-style:normal; color:var(--sage); padding:0 .6rem; }
+
+  /* ---------- masthead ---------- */
+  header.masthead{
+    max-width:1180px; margin:0 auto;
+    padding:2.6rem 1.5rem 1.4rem;
+    text-align:center;
+  }
+  .masthead .kicker{
+    font-family:var(--mono); font-size:.72rem;
+    letter-spacing:.32em; text-transform:uppercase;
+    color:var(--terracotta); margin-bottom:.9rem;
+  }
+  .masthead h1{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(3rem, 9vw, 6.4rem);
+    line-height:.95;
+    letter-spacing:-.02em;
+  }
+  .masthead h1 em{
+    font-style:italic; font-weight:340;
+    color:var(--terracotta);
+  }
+  .rule{
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; gap:1rem;
+    padding:0 1.5rem;
+  }
+  .rule b{ flex:1; border-top:3px solid var(--ink); }
+  .rule b.thin{ border-top:1px solid var(--ink); }
+  .rule .coord{
+    font-family:var(--mono); font-size:.72rem; white-space:nowrap; color:var(--ink-soft);
+  }
+  nav.mainnav{
+    max-width:1180px; margin:1.1rem auto 0;
+    padding:0 1.5rem 1.6rem;
+    display:flex; justify-content:center; flex-wrap:wrap; gap:2.2rem;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.2em; text-transform:uppercase;
+  }
+  nav.mainnav a{
+    color:var(--ink); text-decoration:none; position:relative; padding-bottom:3px;
+  }
+  nav.mainnav a::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+    background:var(--terracotta); transition:width .3s ease;
+  }
+  nav.mainnav a:hover::after, nav.mainnav a[aria-current]::after{ width:100%; }
+  nav.mainnav a[aria-current]{ color:var(--terracotta); }
+
+  /* ---------- layout ---------- */
+  main{
+    max-width:1180px; margin:0 auto;
+    padding:.4rem 1.5rem 4rem;
+    display:grid; gap:2.6rem;
+  }
+
+  .section-label{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--ink-soft);
+    display:flex; align-items:center; gap:.9rem;
+  }
+  .section-label::after{ content:""; flex:1; border-top:1px dashed var(--line); }
+
+  /* ---------- featured post ---------- */
+  article.feature{ display:grid; grid-template-columns: 1.15fr .85fr; gap:2.4rem; align-items:center; }
+
+  .scene{
+    position:relative; overflow:hidden;
+    border:2px solid var(--ink);
+    box-shadow:10px 10px 0 rgba(30,42,45,.12);
+    aspect-ratio:4/3.1;
+  }
+  .scene.feature{aspect-ratio:auto; min-height:340px;}
+  /* night train scene */
+  .scene.night{
+    background:
+      radial-gradient(circle at 78% 22%, rgba(244,238,225,.9) 0 3%, transparent 4%),
+      radial-gradient(ellipse at 50% 120%, #7a4a3a 0%, transparent 55%),
+      linear-gradient(185deg, var(--night) 0%, var(--plum) 58%, #6e4444 100%);
+  }
+  .scene.night::before{ /* stars */
+    content:""; position:absolute; inset:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,.75) 1px, transparent 1.5px),
+      radial-gradient(rgba(255,255,255,.5) 1px, transparent 1.5px);
+    background-size: 90px 70px, 140px 110px;
+    background-position: 12px 8px, 48px 40px;
+    opacity:.6;
+  }
+  .scene.night::after{ /* horizon line of town lights */
+    content:""; position:absolute; left:0; right:0; bottom:26%;
+    height:2px;
+    background:repeating-linear-gradient(90deg, rgba(255,214,140,.85) 0 3px, transparent 3px 14px);
+    opacity:.7;
+  }
+  .route-svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .route-svg path{
+    fill:none; stroke:var(--paper); stroke-width:2; stroke-dasharray:7 7;
+    stroke-dashoffset:600;
+    animation:drawPath 3.2s 1s ease forwards;
+  }
+  .route-svg .plane{
+    fill:var(--paper);
+    opacity:0; animation:rise 1s 3.6s forwards;
+    transform-origin:center;
+  }
+
+  .post-meta{
+    display:flex; flex-wrap:wrap; gap:.5rem 1.4rem;
+    font-family:var(--mono); font-size:.7rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft);
+    margin:1rem 0 .8rem;
+  }
+  .post-meta .tag{ color:#fff; background:var(--terracotta); padding:.15rem .6rem; }
+  .post-meta .coord{ border:1px solid var(--line); padding:.13rem .6rem; }
+
+  .feature h2{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(2rem, 4.6vw, 3.4rem);
+    line-height:1.03;
+    letter-spacing:-.015em;
+  }
+  .feature h2 a{ color:var(--ink); text-decoration:none; }
+  .feature h2 a:hover{ color:var(--terracotta); }
+  .feature .dek{
+    font-size:1.18rem; font-style:italic; color:var(--ink-soft);
+    margin-top:1rem; max-width:34em;
+  }
+  .byline{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.12em;
+    text-transform:uppercase; margin-top:1.4rem;
+  }
+  .byline b{ color:var(--terracotta); font-weight:500; }
+  .readlink{
+    display:inline-block; margin-top:1.1rem;
+    font-family:var(--mono); font-size:.76rem; letter-spacing:.2em;
+    text-transform:uppercase; text-decoration:none;
+    color:var(--ink); border-bottom:2px solid var(--terracotta);
+    padding-bottom:4px; transition:color .25s, letter-spacing .25s;
+  }
+  .readlink:hover{ color:var(--terracotta); letter-spacing:.28em; }
+
+  /* ---------- secondary posts ---------- */
+  .posts{
+    display:grid; grid-template-columns:1fr 1fr; gap:2.2rem;
+  }
+  article.post{
+    border-top:3px solid var(--ink);
+    padding-top:1.2rem;
+    position:relative;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  article.post:hover{ transform:translateY(-6px); }
+  article.post:nth-child(2){ margin-top:2.8rem; }
+
+  .scene.market{
+    aspect-ratio:16/9.5;
+    background:
+      radial-gradient(circle at 28% 30%, rgba(255,236,180,.95) 0 5%, rgba(255,190,90,.55) 9%, transparent 16%),
+      radial-gradient(ellipse at 80% 115%, rgba(38,80,80,.9) 0%, transparent 60%),
+      repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 6px, transparent 6px 12px),
+      linear-gradient(190deg, #a8542c 0%, #d9803e 46%, #b06537 100%);
+  }
+  .scene.market::after{ /* market-stall stripes */
+    content:""; position:absolute; left:0; right:0; bottom:0; height:24%;
+    background:
+      repeating-linear-gradient(90deg, rgba(30,42,45,.28) 0 22px, transparent 22px 44px);
+    border-top:2px solid rgba(30,42,45,.35); clip-path:polygon(0 22%, 100% 34%, 100% 100%, 0 100%);
+  }
+  .scene.azores{
+    aspect-ratio:16/9.5;
+    background:
+      radial-gradient(circle at 70% 25%, rgba(255,255,255,.85) 0 4%, transparent 9%),
+      linear-gradient(180deg, #c9d4c5 0%, #8fa08c 42%, #4f6b5c 72%, #33514a 100%);
+  }
+  .scene.azores::after{ /* rolling waves + lava island */
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 26% 92%, #243b33 0 26%, transparent 27%),
+      repeating-radial-gradient(circle at 20% 130%, rgba(255,255,255,.14) 0 2px, transparent 2px 18px);
+  }
+  .scene .num{
+    position:absolute; top:.4rem; left:.55rem;
+    font-family:var(--mono); font-size:.68rem;
+    color:var(--paper); letter-spacing:.2em; text-shadow:0 1px 3px rgba(0,0,0,.5);
+  }
+  .scene .stamp{
+    position:absolute; right:-.5rem; top:1rem;
+    background:rgba(244,238,225,.92);
+    border:2px solid var(--terracotta);
+    color:var(--terracotta-deep);
+    font-family:var(--mono); font-size:.55rem; letter-spacing:.18em;
+    text-transform:uppercase; text-align:center;
+    padding:.55rem .7rem; line-height:1.7;
+    box-shadow:0 3px 8px rgba(0,0,0,.18);
+    animation:stampIn 1.2s cubic-bezier(.2,1.6,.4,1) both;
+  }
+  .feature-wrap .stamp{ animation-delay:1.1s; }
+  .posts .stamp{ animation-delay:.9s; font-size:.5rem; padding:.45rem .55rem; }
+
+  article.post h3{
+    font-family:var(--display);
+    font-weight:700; font-size:clamp(1.5rem, 2.6vw, 2.1rem);
+    line-height:1.08; margin-top:1.1rem; letter-spacing:-.01em;
+  }
+  article.post h3 a{ color:var(--ink); text-decoration:none; }
+  article.post h3 a:hover{ color:var(--terracotta); }
+  article.post p{ color:var(--ink-soft); margin-top:.6rem; max-width:30em; }
+  article.post .byline{ margin-top:1rem; }
+
+  /* ---------- footer ticket ---------- */
+  footer{
+    background:var(--ink);
+    color:var(--paper);
+    padding:2.8rem 1.5rem 3rem;
+    position:relative; overflow:hidden;
+  }
+  footer::before{
+    content:""; position:absolute; inset:0;
+    background-image:radial-gradient(rgba(244,238,225,.06) 1px, transparent 1.4px);
+    background-size:22px 22px;
+  }
+  .deck{
+    position:relative; max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center;
+  }
+  .deck h4{
+    font-family:var(--display); font-weight:400; font-style:italic;
+    font-size:clamp(1.6rem,3.4vw,2.4rem); line-height:1.15;
+  }
+  .deck .news{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.2em;
+    text-transform:uppercase; margin-bottom:.9rem; color:var(--sage);
+  }
+  .ticket{
+    background:var(--paper); color:var(--ink);
+    border-radius:4px;
+    display:flex; align-items:stretch;
+    box-shadow:8px 8px 0 rgba(0,0,0,.25);
+    font-family:var(--mono);
+    transform:rotate(-1.5deg);
+    transition:transform .35s ease;
+  }
+  .ticket:hover{ transform:rotate(0deg) translateY(-4px); }
+  .ticket .body{ padding:1.1rem 1.4rem; flex:1; }
+  .ticket .route{
+    display:flex; align-items:center; gap:.8rem;
+    font-size:1.5rem; font-weight:500; letter-spacing:.05em;
+  }
+  .ticket .route svg{ flex:1; min-width:40px; }
+  .ticket .sub{
+    font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-soft); margin-top:.7rem;
+  }
+  .ticket .stub{
+    width:64px; border-left:2px dashed var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ticket .stub span{
+    writing-mode:vertical-rl; font-size:.6rem; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--terracotta);
+  }
+  .colophon{
+    position:relative; max-width:1180px; margin:2.4rem auto 0;
+    display:flex; flex-wrap:wrap; gap:.6rem 2.5rem;
+    font-family:var(--mono); font-size:.66rem; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--sage);
+    border-top:1px solid rgba(244,238,225,.2); padding-top:1.3rem;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    article.feature{ grid-template-columns:1fr; }
+    .posts{ grid-template-columns:1fr; }
+    article.post:nth-child(2){ margin-top:0; }
+    .deck{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rise, .stamp{ animation:none; opacity:1; transform:none; }
+    .marquee span, .route-svg path, .route-svg .plane{ animation:none; opacity:1; stroke-dashoffset:0; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker" role="marquee" aria-label="Recent stops">
+    <span class="label">Now boarding</span>
+    <div class="marquee">
+      <span>
+        Sofia 42.70° N &lt;i&gt;/&lt;/i&gt; Trenčín 48.89° N &lt;i&gt;/&lt;/i&gt; Lima −12.05° S &lt;i&gt;/&lt;/i&gt; Ponta Delgada 37.74° N &lt;i&gt;/&lt;/i&gt; Tabriz 38.08° N &lt;i&gt;/&lt;/i&gt; Zanzibar −6.16° S &lt;i&gt;/&lt;/i&gt; Nis −34.74° S &lt;i&gt;/&lt;/i&gt; Mombasa −4.04° S &lt;i&gt;/&lt;/i&gt;
+        Sofia 42.70° N &lt;/i&gt; Trenčín 48.89° N &lt;i&gt;/&lt;/i&gt; Lima −12.05° S &lt;i&gt;/&lt;/i&gt; Ponta Delgada 37.74° N &lt;i&gt;/&lt;/i&gt; Tabriz 38.08° N &lt;i&gt;/&lt;/i&gt; Zanzibar −6.16° S &lt;i&gt;/&lt;/i&gt; Nis −34.74° S &lt;i&gt;/&lt;/i&gt; Mombasa −4.04° S &lt;i&gt;/&lt;/i&gt;
+      </span>
+    </div>
+  </div>
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <p class="kicker rise d1">A travel journal by Nora Callis · est. 2016</p>
+    <h1 class="rise d2">The Long <em>Way</em> Round</h1>
+  </header>
+
+  <div class="rule rise d2" aria-hidden="true">
+    <b></b>
+    <span class="coord">48°51′N 2°21′E — DISPATCH Nº 214</span>
+    <b class="thin"></b>
+  </div>
+
+  <nav class="mainnav rise d3" aria-label="Primary">
+    <a href="#" aria-current="page">Dispatches</a>
+    <a href="#">Field Guides</a>
+    <a href="#">Slow Maps</a>
+    <a href="#">About Nora</a>
+    <a href="#">Letters</a>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- FEATURED -->
+    <section class="feature rise d4" aria-labelledby="feat-title">
+      <div class="feature-wrap">
+        <div class="scene night" role="img" aria-label="A night sky over a frontier town with a dashed route and a small plane">
+          <svg class="route-svg" viewBox="0 0 400 310" aria-hidden="true">
+            <path d="M -10 260 C 90 240, 130 120, 210 100 S 350 60, 430 30"/>
+            <g class="plane" transform="translate(210,100) rotate(20) translate(-10,-6)">
+              <path d="M 20 8 L 2 12 L 14 8 L 2 4 Z"/>
+            </g>
+          </svg>
+          <span class="num">Nº 001</span>
+          <span class="stamp">Irregular<br>Service<br>★ 3rd class ★</span>
+        </div>
+      </div>
+      <div>
+        <p class="section-label">Latest dispatch</p>
+        <h2 id="feat-title"><a href="#">The Night Train Doesn’t Stop for Borders — And Neither Did I</a></h2>
+        <div class="post-meta">
+          <span class="tag">Rail</span>
+          <span>14 min read</span>
+          <span>Nov 02 · Sofia → Trenčín</span>
+          <span class="coord">21h 36m awake</span>
+        </div>
+        <p class="dek">Seventeen hours, one change of uniform for the railwayman, and a pastry case that re-arranged itself at every border. On the slow red line through the Balkans, the night doesn’t say goodbye to the day — it just keeps driving.</p>
+        <p class="byline">By <b>Nora Callis</b> · written in a dining car, seat 7B</p>
+        <a class="readlink" href="#">Read the dispatch →</a>
+      </div>
+    </section>
+
+    <!-- SECONDARY -->
+    <section aria-label="More recent dispatches">
+      <p class="section-label rise d5">Still wet ink</p>
+      <div class="posts">
+
+        <article class="post rise d5">
+          <div class="scene market" role="img" aria-label="A warm sunset over striped market stalls with a low sun">
+            <span class="num">Nº 002</span>
+            <span class="stamp">Post<br>card</span>
+          </div>
+          <h3><a href="#">Eating My Way Through Lima’s Night Market, One Pea at a Time</a></h3>
+          <div class="post-meta">
+            <span class="tag">Food</span>
+            <span>9 min read</span>
+            <span class="coord">−12.05° S, 77.04° W</span>
+          </div>
+          <p>At San Martín’s market the sun melts into the Andes by nine, and by ten the grills are still going. A ledger of ceviche, yuca, and the señora who taught me to chew slowly.</p>
+          <p class="byline">Filed from the <b>6th floor, Miraflores</b></p>
+        </article>
+
+        <article class="post rise d6">
+          <div class="scene azores" role="img" aria-label="Green hills over a grey-green sea under a pale sun">
+            <span class="num">Nº 003</span>
+            <span class="stamp">Airc<br>mail</span>
+          </div>
+          <h3><a href="#">Seven Days Without a Phone on a Volcanic Island (A Full Recovery)</a></h3>
+          <div class="post-meta">
+            <span class="tag">Field notes</span>
+            <span>12 min read</span>
+            <span class="coord">37.74° N, 25.66° W</span>
+          </div>
+          <p>I left my phone in a drawer in Ponta Delgada and nearly died twice — once at the caldera rim, once at dinner. Here is everything the Azores taught me about silence, sheep, and slow coffee.</p>
+          <p class="byline">Filed from a <b>hillside with no signal</b></p>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER / TICKET ============ -->
+  <footer>
+    <div class="deck">
+      <div>
+        <p class="news">Letters from the road — monthly, hand-set</p>
+        <h4>One dispatch, one field guide, and the coordinates I almost missed. No sponsored volcanoes, ever.</h4>
+      </div>
+      <div class="ticket" role="img" aria-label="Boarding pass to wherever, departing Sunday">
+        <div class="body">
+          <div class="route">
+            HERE
+            <svg viewBox="0 0 80 12" aria-hidden="true">
+              <line x1="0" y1="6" x2="66" y2="6" stroke="var(--terracotta)" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <path d="M 66 1 L 78 6 L 66 11 L 70 6 Z" fill="var(--terracotta)"/>
+            </svg>
+            WHEREVER
+          </div>
+          <p class="sub">Passenger: N. Callis · Seat: window, always · Gate: the back door</p>
+        </div>
+        <div class="stub"><span>Boarding</span></div>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>© 2016–2025 The Long Way Round</span>
+      <span>Set in Fraunces &amp; Newsreader</span>
+      <span>Written in 41 time zones</span>
+      <span>Next dispatch departs Sunday</span>
+    </div>
+  </footer>
+
+</body>
+</html>

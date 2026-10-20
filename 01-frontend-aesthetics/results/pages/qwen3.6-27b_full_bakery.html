@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fig &amp; Crumb — Sales Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:      #f6efe3;
+    --paper:      #fdfaf3;
+    --crust:      #3c2a1e;
+    --crust-soft: #6b5340;
+    --terracotta: #c55b33;
+    --butter:     #e9b44c;
+    --sage:       #7c8b6a;
+    --line:       #e4d8c2;
+    --shadow:     0 14px 34px -18px rgba(60,42,30,.35);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{ height:100%; }
+
+  body{
+    font-family:"Work Sans", sans-serif;
+    color:var(--crust);
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(233,180,76,.22), transparent 60%),
+      radial-gradient(900px 600px at -10% 100%, rgba(197,91,51,.12), transparent 55%),
+      repeating-linear-gradient(-45deg, rgba(60,42,30,.014) 0 2px, transparent 2px 6px),
+      var(--cream);
+    min-height:100vh;
+    padding:34px clamp(18px, 4vw, 56px) 60px;
+  }
+
+  .wrap{ max-width:1180px; margin:0 auto; }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:18px;
+    flex-wrap:wrap;
+    padding-bottom:22px;
+    margin-bottom:26px;
+    border-bottom:2px dashed var(--line);
+    animation:rise .6s .05s cubic-bezier(.2,.8,.3,1) both;
+  }
+
+  .brand{ display:flex; align-items:center; gap:16px; }
+
+  .oven{
+    width:56px; height:56px;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 30%, var(--butter), var(--terracotta) 70%);
+    box-shadow:inset 0 0 0 4px rgba(60,42,30,.18), var(--shadow);
+    display:grid; place-items:center;
+    font-family:"Fraunces", serif;
+    font-weight:900; font-size:1.6rem;
+    color:#fff8ec;
+    text-shadow:0 1px 0 rgba(0,0,0,.25);
+  }
+
+  h1{
+    font-family:"Fraunces", serif;
+    font-weight:900;
+    font-size:clamp(1.7rem, 3.4vw, 2.5rem);
+    letter-spacing:-.02em;
+    line-height:1;
+  }
+  .brand p{
+    margin-top:5px;
+    font-size:.82rem;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--crust-soft);
+  }
+
+  .stamp{
+    background:var(--crust);
+    color:var(--cream);
+    padding:10px 18px 12px;
+    border-radius:10px;
+    text-align:right;
+    transform:rotate(1.5deg);
+    box-shadow:var(--shadow);
+  }
+  .stamp small{
+    display:block;
+    font-size:.62rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--butter);
+    margin-bottom:2px;
+  }
+  .stamp strong{
+    font-family:"Fraunces", serif;
+    font-size:1.15rem;
+    font-weight:700;
+  }
+
+  /* ---------- Grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns: 340px 1fr 1fr;
+    gap:22px;
+  }
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:26px 26px 28px;
+    box-shadow:var(--shadow);
+    animation:rise .6s cubic-bezier(.2,.8,.3,1) both;
+  }
+  .card:nth-child(2){ animation-delay:.14s; }
+  .card:nth-child(3){ animation-delay:.26s; }
+
+  .card h2{
+    font-family:"Fraunces", serif;
+    font-weight:700;
+    font-size:1.15rem;
+    margin-bottom:4px;
+  }
+  .card .sub{
+    font-size:.78rem;
+    color:var(--crust-soft);
+    margin-bottom:20px;
+  }
+
+  /* ---------- Revenue hero (left, tall) ---------- */
+  .revenue{
+    grid-row:span 1;
+    background:
+      radial-gradient(320px 200px at 100% 0%, rgba(233,180,76,.20), transparent 70%),
+      var(--crust);
+    color:var(--cream);
+    border:none;
+    display:flex;
+    flex-direction:column;
+  }
+  .revenue h2{ color:#f3e4c4; }
+  .revenue .sub{ color:#c9b394; }
+
+  .big{
+    font-family:"Fraunces", serif;
+    font-weight:900;
+    font-size:clamp(3rem, 5.4vw, 4.2rem);
+    letter-spacing:-.03em;
+    line-height:1;
+    color:#fff8ec;
+  }
+  .big sup{
+    font-size:.42em;
+    font-weight:700;
+    vertical-align:.9em;
+    margin-right:2px;
+    color:var(--butter);
+  }
+
+  .delta{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:14px;
+    background:rgba(124,139,106,.28);
+    border:1px solid rgba(124,139,106,.5);
+    color:#d9e2c9;
+    font-size:.8rem;
+    font-weight:600;
+    padding:6px 12px;
+    border-radius:99px;
+    width:fit-content;
+  }
+  .delta b{ color:#eaf2dc; }
+  .arrow{ font-size:.7rem; color:var(--sage); transform:scaleY(1.4); }
+
+  .mini-stats{
+    margin-top:auto;
+    padding-top:26px;
+    display:grid;
+    gap:14px;
+  }
+  .mini{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-top:1px dashed rgba(246,239,227,.25);
+    padding-top:14px;
+  }
+  .mini span{
+    font-size:.74rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#c9b394;
+  }
+  .mini b{
+    font-family:"Fraunces", serif;
+    font-size:1.25rem;
+    font-weight:700;
+    color:#fff8ec;
+  }
+
+  /* ---------- Best sellers ---------- */
+  .best li{
+    list-style:none;
+    display:grid;
+    grid-template-columns:34px 1fr auto;
+    gap:4px 14px;
+    align-items:center;
+    padding:13px 6px;
+    border-bottom:1px dashed var(--line);
+    animation:rise .5s both;
+  }
+  .best li:nth-child(1){ animation-delay:.38s; }
+  .best li:nth-child(2){ animation-delay:.46s; }
+  .best li:nth-child(3){ animation-delay:.54s; }
+  .best li:nth-child(4){ animation-delay:.62s; }
+  .best li:nth-child(5){ animation-delay:.70s; }
+
+  .rank{
+    width:34px; height:34px;
+    border-radius:50%;
+    display:grid; place-items:center;
+    font-family:"Fraunces", serif;
+    font-weight:700;
+    font-size:1rem;
+    background:var(--cream);
+    color:var(--crust-soft);
+    border:1px solid var(--line);
+  }
+  .best li:first-child .rank{
+    background:var(--terracotta);
+    color:#fff8ec;
+    border-color:transparent;
+  }
+
+  .name{
+    font-weight:600;
+    font-size:.95rem;
+    line-height:1.15;
+  }
+  .qty{
+    font-size:.74rem;
+    color:var(--crust-soft);
+    font-weight:500;
+  }
+
+  .amt{
+    font-family:"Fraunces", serif;
+    font-weight:700;
+    font-size:1.15rem;
+    justify-self:end;
+  }
+
+  .bar-track{
+    grid-column:2 / 4;
+    height:7px;
+    border-radius:99px;
+    background:var(--cream);
+    overflow:hidden;
+    margin-top:7px;
+  }
+  .bar-fill{
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg, var(--butter), var(--terracotta));
+    transform-origin:left;
+    animation:grow .9s .5s cubic-bezier(.2,.8,.3,1) both;
+  }
+
+  /* ---------- Weekly chart ---------- */
+  .chart{
+    display:flex;
+    align-items:flex-end;
+    gap:clamp(8px, 1.6vw, 18px);
+    height:220px;
+    padding:26px 4px 0;
+    position:relative;
+  }
+  .chart::before{
+    /* average line */
+    content:"avg $1,121";
+    position:absolute;
+    left:0; right:0;
+    bottom:calc(26px + 220px * .755);
+    border-top:2px dashed rgba(60,42,30,.22);
+    font-size:.64rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--crust-soft);
+    padding-top:4px;
+    z-index:2;
+  }
+
+  .col{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+    position:relative;
+    z-index:1;
+  }
+
+  .val{
+    font-size:.7rem;
+    font-weight:700;
+    color:var(--crust-soft);
+    opacity:0;
+    transition:opacity .25s;
+  }
+  .col:hover .val{ opacity:1; }
+
+  .bar{
+    width:100%;
+    max-width:52px;
+    border-radius:9px 9px 3px 3px;
+    background:linear-gradient(180deg, #d9a45a, var(--butter));
+    transform-origin:bottom;
+    animation:pop .8s cubic-bezier(.2,.8,.3,1) both;
+    transition:filter .2s, transform .2s;
+  }
+  .col:hover .bar{ filter:brightness(1.07); transform:scaleY(1.015); }
+  /* stagger */
+  .col:nth-child(1) .bar{ animation-delay:.3s;  height:65.5%; }
+  .col:nth-child(2) .bar{ animation-delay:.37s; height:55.4%; }
+  .col:nth-child(3) .bar{ animation-delay:.44s; height:73.6%; }
+  .col:nth-child(4) .bar{ animation-delay:.51s; height:79.1%; }
+  .col:nth-child(5) .bar{ animation-delay:.58s; height:89.2%; }
+  .col:nth-child(6) .bar{ animation-delay:.65s; height:100%; background:linear-gradient(180deg, #e0b25f, var(--butter)); }
+  .col:nth-child(7) .bar{
+    animation-delay:.72s;
+    height:90.8%;
+    background:linear-gradient(180deg, #d9714a, var(--terracotta));
+    box-shadow:0 8px 18px -8px rgba(197,91,51,.55);
+  }
+
+  .day{
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.06em;
+    color:var(--crust-soft);
+    height:22px;
+  }
+  .col:nth-child(7) .day{
+    background:var(--crust);
+    color:var(--cream);
+    width:34px; height:auto;
+    border-radius:99px;
+    text-align:center;
+    padding:4px 0;
+    font-size:.66rem;
+  }
+
+  .baseline{
+    height:2px;
+    background:var(--line);
+    border-radius:2px;
+    margin-top:-1px;
+  }
+
+  /* ---------- Keyframes ---------- */
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(16px); }
+    to  { opacity:1; transform:translateY(0); }
+  }
+  @keyframes grow{
+    from{ transform:scaleX(0); }
+    to  { transform:scaleX(1); }
+  }
+  @keyframes pop{
+    from{ transform:scaleY(0); }
+    70% { transform:scaleY(1.04); }
+    to  { transform:scaleY(1); }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 940px){
+    .grid{ grid-template-columns:1fr 1fr; }
+    .revenue{ grid-column:1 / -1; grid-row:auto; }
+  }
+  @media (max-width: 620px){
+    .grid{ grid-template-columns:1fr; }
+    body{ padding-top:24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; animation-delay:0ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="oven" aria-hidden="true">F</div>
+      <div>
+        <h1>Fig &amp; Crumb</h1>
+        <p>Neighbourhood Bakery · Sales Desk</p>
+      </div>
+    </div>
+    <div class="stamp">
+      <small>Today</small>
+      <strong>Saturday, 14 June</strong>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- Revenue -->
+    <section class="card revenue" aria-label="Today's revenue">
+      <h2>Today's Revenue</h2>
+      <p class="sub">Up from $1,139 on the 7th</p>
+
+      <div class="big"><sup>$</sup>1,284.60</div>
+
+      <div class="delta"><span class="arrow">▲</span> <b>+13.2%</b> vs last week</div>
+
+      <div class="mini-stats">
+        <div class="mini"><span>Transactions</span><b>186</b></div>
+        <div class="mini"><span>Avg. ticket</span><b>$6.90</b></div>
+        <div class="mini"><span>Items baked &amp; sold</span><b>253</b></div>
+        <div class="mini"><span>Today's total</span><b style="color:#e9b44c">✓ on pace</b></div>
+      </div>
+    </section>
+
+    <!-- Best sellers -->
+    <section class="card" aria-label="Best sellers">
+      <h2>Best Sellers</h2>
+      <p class="sub">By revenue, since the ovens woke up</p>
+
+      <ul class="best">
+        <li>
+          <span class="rank">1</span>
+          <div>
+            <div class="name">Butter Croissant</div>
+            <div class="qty">86 sold · out of the 90s</div>
+          </div>
+          <span class="amt">$387</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+        </li>
+        <li>
+          <span class="rank">2</span>
+          <div>
+            <div class="name">Sourdough Loaf</div>
+            <div class="qty">42 sold · every loaf gone</div>
+          </div>
+          <span class="amt">$336</span>
+          <div class="bar-track"><div class="bar-fill" style="width:87%"></div></div>
+        </li>
+        <li>
+          <span class="rank">3</span>
+          <div>
+            <div class="name">Cinnamon Roll (xl)</div>
+            <div class="qty">34 sold · selling out at 11am</div>
+          </div>
+          <span class="amt">$221</span>
+          <div class="bar-track"><div class="bar-fill" style="width:57%"></div></div>
+        </li>
+        <li>
+          <span class="rank">4</span>
+          <div>
+            <div class="name">Sea-Salt Baguette</div>
+            <div class="qty">28 sold</div>
+          </div>
+          <span class="amt">$112</span>
+          <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
+        </li>
+        <li>
+          <span class="rank">5</span>
+          <div>
+            <div class="name">Olive &amp; Rosemary Flatbread</div>
+            <div class="qty">19 sold</div>
+          </div>
+          <span class="amt">$104</span>
+          <div class="bar-track"><div class="bar-fill" style="width:27%"></div></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Weekly chart -->
+    <section class="card" aria-label="Weekly revenue">
+      <h2>This Week</h2>
+      <p class="sub">Monday to today, in dollars</p>
+
+      <div class="chart" role="img" aria-label="Bar chart: Mon 920, Tue 780, Wed 1040, Thu 1120, Fri 1260, Sat 1480, Sun today 1285">
+        <div class="col"><span class="val">$920</span><div class="bar"></div><span class="day">Mon</span></div>
+        <div class="col"><span class="val">$780</span><div class="bar"></div><span class="day">Tue</span></div>
+        <div class="col"><span class="val">$1,040</span><div class="bar"></div><span class="day">Wed</span></div>
+        <div class="col"><span class="val">$1,120</span><div class="bar"></div><span class="day">Thu</span></div>
+        <div class="col"><span class="val">$1,260</span><div class="bar"></div><span class="day">Fri</span></div>
+        <div class="col"><span class="val">$1,480</span><div class="bar"></div><span class="day">Sat</span></div>
+        <div class="col"><span class="val">$1,285</span><div class="bar"></div><span class="day">Today</span></div>
+      </div>
+      <div class="baseline"></div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

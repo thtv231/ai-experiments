@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Huddle — Team meetings that actually happen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500;1,9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f2e9;
+    --paper-2:#efe8da;
+    --ink:#1b1813;
+    --ink-soft:#4c463c;
+    --muted:#7d7466;
+    --line:#ddd4c2;
+    --accent:#ff4d24;
+    --accent-soft:#ffe3da;
+    --green:#1e7a4f;
+    --green-soft:#dcefe3;
+    --gold:#f2b32c;
+    --radius:18px;
+    --shadow:0 20px 50px -18px rgba(27,24,19,.28);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ============ TYPE ============ */
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:800;letter-spacing:-.02em;line-height:1.04}
+  h1{font-size:clamp(2.9rem,6.4vw,5.4rem)}
+  h2{font-size:clamp(2rem,4vw,3.1rem)}
+  .em{font-style:italic;font-weight:700;color:var(--accent)}
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.22em;color:var(--muted);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent)}
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.98rem;
+    padding:15px 26px;border-radius:100px;border:2px solid var(--ink);
+    cursor:pointer;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:5px 5px 0 var(--ink)}
+  .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+  .btn-ghost{background:transparent;color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+  .btn svg{transition:transform .18s ease}
+  .btn:hover svg{transform:translateX(4px)}
+
+  /* ============ NAV ============ */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,242,233,.86);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em}
+  .logo-mark{
+    width:38px;height:38px;border-radius:12px;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-size:1.05rem;transform:rotate(-6deg);
+    box-shadow:3px 3px 0 var(--accent);
+  }
+  .nav-links{display:flex;gap:34px;font-weight:500;font-size:.95rem}
+  .nav-links a{color:var(--ink-soft);position:relative;padding:4px 0}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--accent);transition:width .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:18px}
+  .nav-cta .login{font-weight:600;font-size:.95rem}
+  .btn-sm{padding:11px 22px;font-size:.9rem}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;padding:84px 0 100px;
+    background-image:radial-gradient(var(--line) 1.4px, transparent 1.4px);
+    background-size:26px 26px;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:auto 0 0 0;height:180px;
+    background:linear-gradient(to bottom, transparent, var(--paper));
+    pointer-events:none;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;position:relative;z-index:1}
+  .hero-copy .eyebrow{margin-bottom:22px}
+  h1 .stroke{
+    -webkit-text-stroke:2px var(--ink);color:transparent;font-style:italic;font-weight:700;
+  }
+  .hero-sub{
+    margin:26px 0 36px;font-size:1.18rem;color:var(--ink-soft);max-width:32em;
+  }
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .hero-proof{
+    margin-top:34px;display:flex;align-items:center;gap:14px;
+  }
+  .avatars{display:flex}
+  .avatars span{
+    width:38px;height:38px;border-radius:50%;border:3px solid var(--paper);
+    display:grid;place-items:center;font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;
+    margin-left:-10px;
+  }
+  .avatars span:first-child{margin-left:0}
+  .av1{background:var(--accent);color:#fff} .av2{background:var(--green);color:#fff}
+  .av3{background:var(--gold);color:var(--ink)} .av4{background:var(--ink);color:var(--paper)}
+  .hero-proof small{color:var(--muted);font-size:.88rem;line-height:1.4}
+  .hero-proof strong{color:var(--ink);font-family:'Space Mono',monospace;font-size:.85rem}
+
+  /* ---- Scheduler mock ---- */
+  .mock-zone{position:relative}
+  .sched{
+    background:#fff;border:2px solid var(--ink);border-radius:var(--radius);
+    box-shadow:10px 10px 0 rgba(27,24,19,.12), var(--shadow);
+    overflow:hidden;transform:rotate(1.2deg);max-width:520px;margin:0 auto;
+  }
+  .sched-bar{
+    display:flex;align-items:center;gap:8px;padding:13px 18px;
+    border-bottom:2px solid var(--ink);background:var(--paper-2);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink)}
+  .d1{background:var(--accent)} .d2{background:var(--gold)} .d3{background:var(--green)}
+  .sched-title{
+    margin-left:10px;font-family:'Space Mono',monospace;font-size:.72rem;
+    font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);
+  }
+  .sched-head{padding:22px 22px 0}
+  .sched-head h3{font-size:1.35rem}
+  .sched-head p{font-size:.85rem;color:var(--muted);margin-top:4px}
+  .grid-cal{
+    display:grid;grid-template-columns:52px repeat(5,1fr);gap:6px;padding:18px 22px 8px;
+  }
+  .day-label{
+    font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;
+    text-align:center;color:var(--muted);text-transform:uppercase;padding:4px 0;
+  }
+  .day-label.today{color:var(--accent)}
+  .cell-fill{
+    height:9px;border-radius:4px;margin:3px 2px;
+  }
+  .slot{
+    border-radius:8px;height:34px;position:relative;
+  }
+  .booked{background:#e9e2d2}
+  .free{background:transparent;border:1.5px dashed var(--line)}
+  .found{
+    background:var(--green);color:#fff;display:grid;place-items:center;
+    font-family:'Space Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.08em;
+    box-shadow:0 4px 0 rgba(27,24,19,.25);
+  }
+  .found::after{
+    content:"◆ PICKED";
+  }
+  .sched-foot{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 22px 20px;
+  }
+  .chip{
+    font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;
+    background:var(--accent-soft);color:var(--accent);
+    padding:7px 12px;border-radius:100px;border:1.5px solid var(--accent);
+  }
+  .mini-btn{
+    background:var(--ink);color:var(--paper);font-size:.8rem;font-weight:600;
+    padding:9px 18px;border-radius:100px;
+  }
+  /* floating tags */
+  .float-tag{
+    position:absolute;background:#fff;border:2px solid var(--ink);border-radius:12px;
+    padding:10px 15px;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;
+    box-shadow:4px 4px 0 rgba(27,24,19,.2);white-space:nowrap;
+  }
+  .tag-1{top:-18px;right:-8px;transform:rotate(3deg);color:var(--green)}
+  .tag-2{bottom:34px;left:-22px;transform:rotate(-4deg);color:var(--accent);display:flex;align-items:center;gap:8px}
+  .tag-2 .pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.55}}
+
+  /* ============ LOGO STRIP ============ */
+  .strip{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--paper-2)}
+  .strip-flex{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:20px 0;justify-content:center}
+  .strip-flex span{
+    font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;color:var(--ink-soft);
+    padding:0 26px;opacity:.75;
+  }
+  .strip-flex i{width:5px;height:5px;border-radius:50%;background:var(--ink);opacity:.4;font-style:normal}
+
+  /* ============ SECTION SHELL ============ */
+  section{padding:100px 0}
+  .sec-head{max-width:640px;margin-bottom:60px}
+  .sec-head .eyebrow{margin-bottom:18px}
+  .sec-head p{margin-top:18px;color:var(--ink-soft);font-size:1.1rem}
+
+  /* ============ BENTO ============ */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+  .card{
+    background:#fff;border:2px solid var(--ink);border-radius:var(--radius);
+    padding:32px;position:relative;transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--ink)}
+  .card h3{font-size:1.45rem;margin:16px 0 10px}
+  .card p{color:var(--ink-soft);font-size:.98rem}
+  .c-a{grid-column:span 4;grid-row:span 2;background:var(--ink);color:var(--paper)}
+  .c-a p{color:#c9c2b4}
+  .c-b,.c-c{grid-column:span 2}
+  .c-d,.c-e,.c-f{grid-column:span 2}
+  .icon{
+    width:52px;height:52px;border-radius:14px;display:grid;place-items:center;
+    background:var(--accent-soft);color:var(--accent);
+  }
+  .c-a .icon{background:var(--accent);color:#fff}
+  .icon-b{background:var(--green-soft);color:var(--green)}
+  .icon-c{background:#fbecc9;color:#b98207}
+  .icon-d{background:var(--accent-soft);color:var(--accent)}
+  .icon-e{background:var(--green-soft);color:var(--green)}
+  .icon-f{background:#fbecc9;color:#b98207}
+  .c-a .big-stat{font-family:'Fraunces',serif;font-style:italic;font-weight:700;font-size:4.2rem;color:var(--accent);line-height:1}
+  .c-a h3{font-size:1.9rem;margin-top:22px}
+  .mini-replies{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  .reply{
+    display:flex;gap:10px;align-items:center;font-size:.85rem;color:#e8e2d5;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+    padding:10px 14px;border-radius:12px;
+  }
+  .reply b{color:#fff;font-weight:600}
+  .reply .ok{margin-left:auto;font-family:'Space Mono',monospace;font-size:.65rem;color:#7fd6a4;letter-spacing:.1em}
+  .c-a h3 small{display:block;font-family:'Space Grotesk';font-weight:400;font-size:.85rem;color:#a49b8a;margin-top:14px;letter-spacing:0}
+
+  /* ============ HOW ============ */
+  .how{background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;counter-reset:step}
+  .step{position:relative;background:#fff;border:2px solid var(--ink);border-radius:var(--radius);padding:38px 30px 34px}
+  .step::before{
+    counter-increment:step;content:"0" counter(step);
+    font-family:'Fraunces',serif;font-style:italic;font-weight:700;font-size:4.4rem;
+    color:var(--accent);line-height:1;display:block;margin-bottom:14px;
+  }
+  .step h3{font-size:1.4rem;margin-bottom:12px}
+  .step p{color:var(--ink-soft);font-size:.96rem}
+  .step .arrow{
+    position:absolute;top:38px;right:-26px;z-index:2;color:var(--ink);
+    display:grid;place-items:center;
+  }
+  .step:last-child .arrow{display:none}
+
+  /* ============ QUOTE ============ */
+  .quote-sec{position:relative;overflow:hidden}
+  .quote-sec .deco{
+    position:absolute;font-family:'Fraunces',serif;font-style:italic;font-weight:700;
+    font-size:24rem;line-height:.8;color:var(--accent);opacity:.08;top:-40px;left:-20px;
+    pointer-events:none;user-select:none;
+  }
+  .quote{max-width:850px;margin:0 auto;text-align:center;position:relative}
+  .quote blockquote{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,3.4vw,2.5rem);
+    line-height:1.3;letter-spacing:-.015em;
+  }
+  .quote blockquote .hl{background:linear-gradient(transparent 62%, var(--gold) 62%);padding:0 4px}
+  .quote figcaption{margin-top:30px;display:flex;align-items:center;justify-content:center;gap:16px}
+  .quote .q-av{
+    width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-family:'Space Mono',monospace;font-weight:700;
+  }
+  .q-meta{text-align:left}
+  .q-meta b{display:block;font-size:1rem}
+  .q-meta small{color:var(--muted);font-size:.85rem}
+
+  /* ============ PRICING ============ */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto}
+  .plan{background:#fff;border:2px solid var(--ink);border-radius:var(--radius);padding:40px 36px;position:relative}
+  .plan.pro{background:var(--ink);color:var(--paper)}
+  .plan .tag{
+    position:absolute;top:-16px;right:28px;background:var(--accent);color:#fff;
+    font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.14em;
+    padding:7px 14px;border-radius:100px;border:2px solid var(--ink);
+  }
+  .plan h3{font-size:1.5rem}
+  .plan .amount{font-family:'Fraunces',serif;font-weight:800;font-size:3.6rem;margin:16px 0 4px;letter-spacing:-.03em}
+  .plan .amount sup{font-size:1.4rem;font-weight:600;vertical-align:super}
+  .plan .per{color:var(--muted);font-size:.88rem;margin-bottom:26px}
+  .plan.pro .per{color:#a49b8a}
+  .plan ul{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:12px}
+  .plan li{display:flex;gap:12px;font-size:.95rem;align-items:flex-start}
+  .plan li svg{flex-shrink:0;margin-top:4px}
+  .plan .btn{width:100%;justify-content:center}
+  .plan.pro .btn-ghost{border-color:var(--paper);color:var(--paper)}
+  .plan.pro .btn-ghost:hover{background:var(--paper);color:var(--ink)}
+  .btn-primary.pulse2{box-shadow:5px 5px 0 rgba(255,255,255,.85)}
+
+  /* ============ FINAL CTA ============ */
+  .final{
+    background:var(--accent);color:#fff;text-align:center;padding:110px 24px;position:relative;
+    background-image:radial-gradient(rgba(255,255,255,.22) 1.4px, transparent 1.4px);
+    background-size:26px 26px;
+  }
+  .final h2{font-size:clamp(2.4rem,5.4vw,4.4rem);color:#fff}
+  .final h2 em{font-family:'Fraunces',serif;color:var(--ink);-webkit-text-stroke:0}
+  .final p{max-width:30em;margin:22px auto 38px;color:#ffe9e2;font-size:1.12rem}
+  .final .btn-ghost{border-color:#fff;color:#fff}
+  .final .btn-ghost:hover{background:#fff;color:var(--accent)}
+  .final .link-row{margin-top:26px;font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#ffd3c8}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--ink);color:#a49b8a;padding:70px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:56px}
+  .foot-brand .logo{color:var(--paper);margin-bottom:16px}
+  .foot-brand p{font-size:.92rem;max-width:24em}
+  .foot-col h4{
+    font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;
+    letter-spacing:.2em;color:#6f6759;margin-bottom:18px;
+  }
+  .foot-col a{display:block;font-size:.93rem;padding:5px 0;transition:color .15s}
+  .foot-col a:hover{color:var(--accent)}
+  .foot-bottom{
+    border-top:1px solid #35302a;padding-top:26px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;
+  }
+  .foot-bottom .clock{color:var(--gold)}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:70px}
+    .mock-zone{padding:0 12px}
+    .bento{grid-template-columns:repeat(2,1fr)}
+    .c-a{grid-column:span 2;grid-row:auto}
+    .c-b,.c-c,.c-d,.c-e,.c-f{grid-column:span 1}
+    .steps{grid-template-columns:1fr}
+    .step .arrow{display:none!important}
+    .price-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:720px){
+    .nav-links{display:none}
+    .bento{grid-template-columns:1fr}
+    .c-b,.c-c,.c-d,.c-e,.c-f{grid-column:span 1}
+    .tag-2{left:-6px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#"><span class="logo-mark">H</span>Huddle</a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#love">Customers</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="login" href="#">Log in</a>
+      <a class="btn btn-primary btn-sm" href="#">Get Huddle free</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Scheduling, minus the noise</span>
+      <h1>End the <span class="stroke">forever</span> back‑and‑forth to just get a meeting <span class="em">on the books.</span></h1>
+      <p class="hero-sub">Huddle reads everyone's calendar, finds the one slot that actually works, books it, and remembers to prep the room, the link, and the agenda — so you never type “does Thursday work?” again.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#pricing">Start your first Huddle
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#how">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          See how it works
+        </a>
+      </div>
+      <div class="hero-proof">
+        <div class="avatars">
+          <span class="av1">JM</span><span class="av2">RK</span><span class="av3">TS</span><span class="av4">AL</span>
+        </div>
+        <small><strong>12,480 teams</strong> stopped rescheduling.<br>Avg. 3.1h saved per person, per month.</small>
+      </div>
+    </div>
+
+    <div class="mock-zone">
+      <div class="sched" aria-label="Huddle scheduler preview">
+        <div class="sched-bar">
+          <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+          <span class="sched-title">huddle · find-a-slot</span>
+        </div>
+        <div class="sched-head">
+          <h3>Design sync × 6</h3>
+          <p>Everyone's free… exactly once this week:</p>
+        </div>
+        <div class="grid-cal">
+          <span></span>
+          <span class="day-label">Mon</span><span class="day-label">Tue</span><span class="day-label today">Wed</span><span class="day-label">Thu</span><span class="day-label">Fri</span>
+          <!-- row: 9:00 -->
+          <span class="cell-fill" style="background:var(--paper-2);height:12px;border-radius:3px;display:grid;place-items:center;font-family:'Space Mono';font-size:.55rem;color:var(--muted)">9</span>
+          <span class="slot booked"></span><span class="slot booked"></span><span class="slot booked"></span><span class="slot booked"></span><span class="slot booked"></span>
+          <!-- row: 11:00 -->
+          <span class="cell-fill" style="background:var(--paper-2);height:12px;border-radius:3px;display:grid;place-items:center;font-family:'Space Mono';font-size:.55rem;color:var(--muted)">11</span>
+          <span class="slot booked"></span><span class="slot free"></span><span class="slot booked"></span><span class="slot free"></span><span class="slot booked"></span>
+          <!-- row: 1:00 -->
+          <span class="cell-fill" style="background:var(--paper-2);height:12px;border-radius:3px;display:grid;place-items:center;font-family:'Space Mono';font-size:.55rem;color:var(--muted)">1</span>
+          <span class="slot free"></span><span class="slot booked"></span><span class="slot booked"></span><span class="slot booked"></span><span class="slot free"></span>
+          <!-- row: 3:00 -->
+          <span class="cell-fill" style="background:var(--paper-2);height:12px;border-radius:3px;display:grid;place-items:center;font-family:'Space Mono';font-size:.55rem;color:var(--muted)">3</span>
+          <span class="slot booked"></span><span class="slot booked"></span><span class="slot found"></span><span class="slot booked"></span><span class="slot booked"></span>
+        </div>
+        <div class="sched-foot">
+          <span class="chip">Wed 3:00 · 45 min · 6/6 available</span>
+          <span class="mini-btn">Book it →</span>
+        </div>
+      </div>
+      <div class="float-tag tag-1">✓ Room 4B reserved</div>
+      <div class="float-tag tag-2"><span class="pulse"></span>6 invites sent · 0 replies needed</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STRIP ============ -->
+<div class="strip">
+  <div class="wrap strip-flex">
+    <span>Fernwood</span><i></i><span>LoopHQ</span><i></i><span>Cartwheel</span><i></i>
+    <span>Mode &amp; Co.</span><i></i><span>Packet</span><i></i><span>Baseline</span>
+  </div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why teams switch</span>
+      <h2>Your group chat has been <span class="em">your scheduler</span> long enough.</h2>
+      <p>Huddle understands availability, time zones, no-meeting blocks, and even "I have a dentist appointment Thursday". Humans shouldn't have to.</p>
+    </div>
+    <div class="bento">
+      <div class="card c-a">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div class="big-stat">47 min</div>
+        <h3>from "hey you all free sometime" to booked.
+          <small>Median pick-to-confirm time across 12k teams, 2024.</small>
+        </h3>
+        <div class="mini-replies">
+          <div class="reply"><b>Mara</b> huddle, sync the design crew Thursday <span class="ok">FOUND ✓</span></div>
+          <div class="reply"><b>Huddle</b> Thursday 3:00 works for all 6 — book it? <span class="ok">YES</span></div>
+        </div>
+      </div>
+
+      <div class="card c-b">
+        <div class="icon icon-b">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.7 3.7 9S14.5 18.4 12 21c-2.5-2.6-3.7-5.7-3.7-9S9.5 5.6 12 3z"/></svg>
+        </div>
+        <h3>Timezone fluent</h3>
+        <p>Overlaps found in the overlap of Lisbon, Austin, and Tokyo — and politely avoided.</p>
+      </div>
+
+      <div class="card c-c">
+        <div class="icon icon-c">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+        </div>
+        <h3>Availability respect</h3>
+        <p>Jen's "deep work Wednesday" stays deep work. Huddle never books over it.</p>
+      </div>
+
+      <div class="card c-d">
+        <div class="icon icon-d">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+        </div>
+        <h3>Recurs without you</h3>
+        <p>Standups, 1:1s, retro — repeats itself, finds a new slot when a conflict appears.</p>
+      </div>
+
+      <div class="card c-e">
+        <div class="icon icon-e">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v13H4z"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <h3>Rooms &amp; gear auto-booked</h3>
+        <p>Reservable space, video link, agenda doc — attached the moment the slot is confirmed.</p>
+      </div>
+
+      <div class="card c-f">
+        <div class="icon icon-f">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
+        </div>
+        <h3>Your meeting diet, visible</h3>
+        <p>Weekly digest of hours-in-meetings, per person, so the culture talk starts with data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three moves. <span class="em">Zero</span> calendar Tetris.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Point Huddle at your team</h3>
+        <p>One-click connect for Google or Outlook calendars. Huddle reads availability only — event contents stay yours, always.</p>
+        <span class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="step">
+        <h3>Ask for a Huddle</h3>
+        <p>Type it in any chat: "huddle, budget review with finance, 45 min". Huddle scans, ranks, and proposes the strongest slots — or the only slot.</p>
+        <span class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="step">
+        <h3>Everyone just shows up</h3>
+        <p>Invites land, conflicts dissolve, and if someone flips out, Huddle quietly rebooks without waking up the whole thread.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="quote-sec" id="love">
+  <span class="deco" aria-hidden="true">“</span>
+  <div class="wrap">
+    <figure class="quote">
+      <blockquote>
+        “We used to burn a whole morning herding eight calendars together. Now it's one message in the chat — <span class="hl">done before my coffee's done</span>. It genuinely changed how the team feels about meetings."""
+      </blockquote>
+      <figcaption>
+        <span class="q-av">DK</span>
+        <span class="q-meta"><b>Dana Kowalczyk</b><small>Head of Operations, LoopHQ</small></span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing" style="background:var(--paper-2);border-top:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow" style="justify-content:center">Pricing</span>
+      <h2>Cheaper than the hours <span class="em">already wasted.</span></h2>
+    </div>
+    <div class="price-grid">
+      <div class="plan">
+        <h3 class="serif">Crew</h3>
+        <div class="amount"><sup>$</sup>0</div>
+        <div class="per">free forever · up to 8 people</div>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Unlimited Huddles, one-click slots</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Google &amp; Outlook sync</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Recurring meetings</li>
+        </ul>
+        <a class="btn btn-ghost" href="#">Start free</a>
+      </div>
+      <div class="plan pro">
+        <span class="tag">MOST HUDDLED</span>
+        <h3 class="serif">Company</h3>
+        <div class="amount"><sup>$</sup>8</div>
+        <div class="per">per person / month · unlimited seats</div>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Everything in Crew</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Auto room &amp; video-link booking</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Silent rebooking when plans change</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Meeting-load digests &amp; admin controls</li>
+        </ul>
+        <a class="btn btn-primary pulse2" href="#">Start 14-day trial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <span class="eyebrow" style="color:#fff">Ready when you are</span>
+  <h2>Your calendar finally gets a <em>second opinion.</em></h2>
+  <p>Free for small crews. Connected in under two minutes. The next meeting could be booked by the time you finish reading this.</p>
+  <a class="btn btn-primary" href="#">
+    Create Huddle — it's free
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+  <div class="link-row">No credit card · Cancel anytime · Your calendar stays yours</div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#"><span class="logo-mark">H</span>Huddle</a>
+        <p>The scheduling app that finds the meeting so your team can have it. Made for teams of 3 to 3,000.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#">Changelog</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#">About</a><a href="#">Careers</a><a href="#">Press kit</a><a href="#">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a><a href="#">DPA</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025 HUDDLE INC.</span>
+      <span class="clock">NOW SCHEDULING · GOOD LUCK, CALENDARS</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

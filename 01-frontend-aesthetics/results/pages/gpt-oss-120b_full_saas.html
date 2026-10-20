@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Huddle – Schedule Team Meetings</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Colour palette */
+      --color-primary: #0d47a1;      /* Deep navy */
+      --color-accent: #ff9800;       /* Warm orange */
+      --color-bg-dark: #0a0e1a;      /* Near‑black */
+      --color-bg-light: #141c2f;     /* Slightly lighter for gradients */
+      --color-text: #e5e7eb;         /* Light gray */
+      --color-muted: #a0aec0;        /* Muted gray for subtitles */
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: 'Lora', serif;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255,152,0,0.15), transparent 70%),
+        linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+      color: var(--color-text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--color-accent);
+    }
+
+    nav a {
+      margin-left: 2rem;
+      color: var(--color-muted);
+      transition: color .3s;
+    }
+    nav a:hover { color: var(--color-text); }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(120deg, transparent 0%, rgba(13,71,161,0.2) 50%, transparent 100%);
+      pointer-events:none;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 4.5rem;
+      line-height: 1;
+      margin-bottom: .5rem;
+      color: var(--color-accent);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 30rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-muted);
+    }
+
+    .cta {
+      background: var(--color-accent);
+      color: #fff;
+      border: none;
+      padding: .75rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: .4rem;
+      transition: background .3s, transform .2s;
+    }
+    .cta:hover { background: #e68900; transform: translateY(-2px); }
+
+    .features {
+      background: var(--color-bg-dark);
+      padding: 4rem 2rem;
+    }
+
+    .features .grid {
+      display: grid;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .feature-card {
+      background: var(--color-bg-light);
+      border-radius: .8rem;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .feature-card svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      fill: var(--color-primary);
+    }
+
+    .feature-card h3 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem;
+      margin-bottom: .5rem;
+      color: var(--color-accent);
+    }
+
+    .feature-card p {
+      font-size: .95rem;
+      color: var(--color-muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: .85rem;
+      color: var(--color-muted);
+    }
+
+    /* Entrance animation */
+    .animate {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp .8s forwards;
+    }
+    .animate.delay-1 { animation-delay: .2s; }
+    .animate.delay-2 { animation-delay: .4s; }
+    .animate.delay-3 { animation-delay: .6s; }
+    .animate.delay-4 { animation-delay: .8s; }
+    .animate.delay-5 { animation-delay: 1s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 3rem; }
+      .hero p { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo animate delay-1">Huddle</div>
+    <nav class="animate delay-2">
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1 class="animate delay-2">Meetings, Made Simple</h1>
+    <p class="animate delay-3">Huddle helps teams find the perfect time, set agendas, and keep everyone on the same page—without the back‑and‑forth.</p>
+    <button class="cta animate delay-4">Get Started Free</button>
+  </section>
+
+  <section class="features">
+    <div class="grid">
+      <div class="feature-card animate delay-1">
+        <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" stroke="none"/></svg>
+        <h3>Smart Scheduling</h3>
+        <p>AI‑driven suggestions find the optimal slot for every participant.</p>
+      </div>
+      <div class="feature-card animate delay-2">
+        <svg viewBox="0 0 64 64"><rect x="12" y="12" width="40" height="40" rx="6"/></svg>
+        <h3>Shared Agendas</h3>
+        <p>Build agendas together and keep meetings focused and productive.</p>
+      </div>
+      <div class="feature-card animate delay-3">
+        <svg viewBox="0 0 64 64"><polygon points="32,8 56,56 8,56"/></svg>
+        <h3>Instant Reminders</h3>
+        <p>Automatic notifications ensure no one ever misses a meeting again.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Huddle. All rights reserved.
+  </footer>
+</body>
+</html>

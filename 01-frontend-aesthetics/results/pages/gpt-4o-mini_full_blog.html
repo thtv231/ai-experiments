@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Writer's Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dominant-color: #2E8B57;
+            --accent-color-1: #FF6F61;
+            --accent-color-2: #F7C6A0;
+            --text-color: #333;
+            --background-color: #F9F9F9;
+            --header-background: linear-gradient(to right, #F7C6A0, #FF6F61);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+        
+        header {
+            background: var(--header-background);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--dominant-color);
+        }
+        
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+            animation-delay: 0.2s;
+            animation-fill-mode: forwards;
+        }
+
+        .post {
+            background-color: white;
+            border: 1px solid var(--accent-color-1);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-title {
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .post-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Adventures of a Travel Writer</h1>
+    <h2>Recent Posts</h2>
+</header>
+
+<section class="posts">
+    <div class="post">
+        <h3 class="post-title">Exploring the Hidden Gems of Italy</h3>
+        <p class="post-excerpt">Join me as I uncover Italy's lesser-known treasures, from quaint villages to stunning landscapes.</p>
+    </div>
+    <div class="post">
+        <h3 class="post-title">A Culinary Journey Through Thailand</h3>
+        <p class="post-excerpt">Savor the flavors of Thailand with me as I traverse the street markets and try authentic dishes.</p>
+    </div>
+    <div class="post">
+        <h3 class="post-title">The Majesty of the Canadian Rockies</h3>
+        <p class="post-excerpt">Experience the breathtaking beauty of the Canadian Rockies through my adventurous hikes and stories.</p>
+    </div>
+</section>
+
+</body>
+</html>

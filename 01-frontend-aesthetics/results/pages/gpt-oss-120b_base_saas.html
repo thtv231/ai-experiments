@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Huddle – Schedule Smarter Team Meetings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #6366F1;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-800: #262626;
+      --text: #111827;
+      --radius: .5rem;
+      --font: 'Poppins', sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(90%, 1200px);
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      padding: 4rem 0 6rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 1.125rem;
+      margin: 1rem 0 2rem;
+      max-width: 45ch;
+      margin-inline: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      padding: .75rem 1.5rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      transition: background .2s, color .2s;
+    }
+
+    .cta-btn:hover {
+      background: var(--gray-100);
+    }
+
+    .features {
+      display: grid;
+      gap: 2rem;
+      padding: 4rem 0;
+      background: var(--gray-100);
+    }
+
+    .feature-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      text-align: center;
+    }
+
+    .feature-card svg {
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+      fill: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: .5rem;
+    }
+
+    .feature-card p {
+      font-size: .95rem;
+      color: #555;
+    }
+
+    .testimonials {
+      padding: 4rem 0;
+    }
+
+    .testimonial {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: "“";
+      font-size: 4rem;
+      color: var(--primary);
+      position: absolute;
+      top: -1rem;
+      left: .5rem;
+      line-height: 1;
+    }
+
+    .testimonial p {
+      margin-bottom: 1rem;
+    }
+
+    .testimonial .author {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    footer {
+      background: var(--gray-800);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 0;
+      font-size: .9rem;
+    }
+
+    @media (min-width: 640px) {
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Huddle</h1>
+      <p>Effortlessly schedule, organize, and run team meetings. Spend less time coordinating and more time collaborating.</p>
+      <a href="#signup" class="cta-btn">Get Started – Free</a>
+    </div>
+  </header>
+
+  <section class="features container">
+    <div class="feature-card">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      </svg>
+      <h3>Smart Scheduling</h3>
+      <p>Find the perfect time for everyone with AI‑driven availability matching.</p>
+    </div>
+
+    <div class="feature-card">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2a9 9 0 00-9 9c0 5 5 9 9 9s9-4 9-9a9 9 0 00-9-9zm0 16a7 7 0 110-14 7 7 0 010 14z"/>
+        <path d="M12 7a2 2 0 100 4 2 2 0 000-4z"/>
+      </svg>
+      <h3>Integrated Agenda</h3>
+      <p>Attach topics, documents, and notes directly to each meeting.</p>
+    </div>
+
+    <div class="feature-card">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/>
+      </svg>
+      <h3>Real‑time Reminders</h3>
+      <p>Automatic notifications keep everyone on track, on time.</p>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <div class="testimonial">
+        <p>Huddle has transformed the way our remote team coordinates. We no longer waste hours chasing availability – the app does it for us.</p>
+        <div class="author">— Maya L., Product Lead</div>
+      </div>
+
+      <div class="testimonial">
+        <p>The integrated agenda feature is a game‑changer. All meeting files are right where we need them.</p>
+        <div class="author">— Carlos D., Engineering Manager</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Huddle • All rights reserved.
+  </footer>
+
+</body>
+</html>

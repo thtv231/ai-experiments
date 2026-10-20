@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Sales Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f3e9;
+            color: #000000;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #c72c30;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: #c72c30;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
+        .revenue {
+            font-size: 1.5em;
+        }
+        .best-sellers {
+            list-style: none;
+            padding: 0;
+        }
+        .best-sellers li {
+            margin: 5px 0;
+        }
+        .chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 200px;
+            margin-top: 10px;
+        }
+        .bar {
+            width: 14%;
+            background-color: #c72c30;
+            margin: 0 5px;
+        }
+        .bar span {
+            display: block;
+            text-align: center;
+            color: white;
+            font-size: 0.9em;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bakery Sales Dashboard</h1>
+    
+    <div class="section">
+        <h2>Today's Revenue</h2>
+        <p class="revenue">$1,250.00</p>
+    </div>
+
+    <div class="section">
+        <h2>Best Sellers</h2>
+        <ul class="best-sellers">
+            <li>Chocolate Croissant</li>
+            <li>Sourdough Bread</li>
+            <li>Classic Baguette</li>
+            <li>Blueberry Muffin</li>
+            <li>Carrot Cake</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Weekly Revenue Chart</h2>
+        <div class="chart">
+            <div class="bar" style="height: 80%;"><span>$1000</span></div>
+            <div class="bar" style="height: 60%;"><span>$750</span></div>
+            <div class="bar" style="height: 40%;"><span>$500</span></div>
+            <div class="bar" style="height: 20%;"><span>$250</span></div>
+            <div class="bar" style="height: 90%;"><span>$1150</span></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wanderer's Quill – Travel Writer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Vintage letterpress theme */
+        :root {
+            --bg-color: #fdf6e3;       /* cream paper */
+            --text-color: #000000;     /* ink black */
+            --accent-color: #e34234;   /* vermilion red */
+            --rule-color: #cccccc;     /* thin rule */
+            --max-width: 800px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        nav {
+            margin-top: 0.5rem;
+        }
+
+        nav a {
+            margin: 0 0.8rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--rule-color);
+            margin: 2rem 0;
+        }
+
+        article {
+            margin-bottom: 2rem;
+        }
+
+        article h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin: 0 0 0.3rem;
+            color: var(--text-color);
+        }
+
+        article h2 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        article h2 a:hover {
+            color: var(--accent-color);
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #555555;
+            margin-bottom: 0.8rem;
+        }
+
+        .post-excerpt {
+            margin-bottom: 0.5rem;
+        }
+
+        .read-more {
+            text-decoration: none;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Wanderer's Quill</h1>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Journeys</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+
+        <hr>
+
+        <section id="recent-posts">
+            <article>
+                <h2><a href="#">Silk Roads of the South: A Journey Through Vietnam</a></h2>
+                <div class="post-meta">October 12, 2026 • Vietnam</div>
+                <p class="post-excerpt">
+                    From the bustling streets of Ho Chi Minh City to the mist‑clad rice terraces of Sapa, I chased the lingering scent of incense and the echo of ancient markets...
+                </p>
+                <a class="read-more" href="#">Read more →</a>
+            </article>
+
+            <hr>
+
+            <article>
+                <h2><a href="#">Midnight Sun in the Arctic Circle</a></h2>
+                <div class="post-meta">September 28, 2026 • Norway</div>
+                <p class="post-excerpt">
+                    The perpetual daylight painted the fjords in gold. I set sail on a traditional wooden boat, chasing whales and the fleeting glimpse of the midnight sun...
+                </p>
+                <a class="read-more" href="#">Read more →</a>
+            </article>
+
+            <hr>
+
+            <article>
+                <h2><a href="#">Desert Whispers: Trekking the Atacama</a></h2>
+                <div class="post-meta">September 10, 2026 • Chile</div>
+                <p class="post-excerpt">
+                    Under a sky so clear it seemed painted, I walked the salt flats where the earth meets the heavens, discovering hidden lagoons and ancient petroglyphs...
+                </p>
+                <a class="read-more" href="#">Read more →</a>
+            </article>
+        </section>
+
+        <footer>
+            © 2026 Wanderer's Quill. All rights reserved.
+        </footer>
+    </div>
+</body>
+</html>

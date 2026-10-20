@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wandering Inks — A Travel Journal by Mara Ellison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #22303a;
+    --ink-soft: #5c6b74;
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --accent: #b4642d;
+    --accent-deep: #8f4c20;
+    --teal: #2e6e6a;
+    --line: #e7e0d5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 6vw;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo em { color: var(--accent); font-style: italic; }
+
+  nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition: color 0.2s ease;
+    position: relative;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.25s ease;
+  }
+  nav a:hover { color: var(--ink); }
+  nav a:hover::after { width: 100%; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 84px 6vw 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .hero::before {
+    width: 420px; height: 420px;
+    background: #f2c9a3;
+    top: -160px; left: -120px;
+  }
+  .hero::after {
+    width: 380px; height: 380px;
+    background: #bfe0dc;
+    bottom: -180px; right: -100px;
+  }
+
+  .hero .kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 18px auto 20px;
+    max-width: 760px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero p {
+    max-width: 560px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  .hero .orn {
+    margin: 34px auto 0;
+    width: 70px;
+    height: 1px;
+    background: var(--line);
+    position: relative;
+  }
+  .hero .orn::after {
+    content: "✦";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent);
+    font-size: 0.75rem;
+    background: var(--paper);
+    padding: 0 10px;
+  }
+
+  /* ---------- Posts ---------- */
+  .posts {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 6vw 90px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .section-label h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 34px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px -18px rgba(34, 48, 58, 0.3);
+  }
+
+  /* CSS "photographs" */
+  .photo {
+    height: 210px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 18px;
+  }
+  .photo .badge {
+    background: rgba(255,255,255,0.92);
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 3px;
+  }
+
+  .photo-lisbon {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.18)),
+      radial-gradient(circle at 78% 18%, #ffd9a0 22px, transparent 24px),
+      linear-gradient(160deg, #f5a868 0%, #e0754a 45%, #8f4c20 100%);
+  }
+  .photo-lisbon::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 46%;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(255,255,255,0.20) 0 14px,
+        rgba(143,76,32,0.35) 14px 30px,
+        transparent 30px 44px);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 60%);
+    mask-image: linear-gradient(180deg, transparent, #000 60%);
+  }
+
+  .photo-hokkaido {
+    background:
+      linear-gradient(180deg, #bfe0dc 0%, #e9f3ef 55%),
+      radial-gradient(ellipse at 20% 100%, #ffffff 40%, transparent 42%),
+      radial-gradient(ellipse at 75% 105%, #d9ebe7 46%, transparent 49%);
+  }
+  .photo-hokkaido::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 38%;
+    background:
+      radial-gradient(ellipse at 30% 100%, #ffffff 55%, transparent 57%),
+      radial-gradient(ellipse at 70% 102%, #f2fff9 60%, transparent 62%);
+  }
+  .photo-hokkaido::before {
+    content: "";
+    position: absolute;
+    top: 22%;
+    right: 14%;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff8ec 60%, rgba(255,248,236,0) 70%);
+    opacity: 0.9;
+  }
+
+  .photo-sahara {
+    background:
+      linear-gradient(180deg, #2e4a6b 0%, #7b6a8f 40%, #c98a52 68%, #e8b577 100%);
+  }
+  .photo-sahara::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 34%;
+    background:
+      radial-gradient(ellipse at 35% 118%, #e8b577 60%, transparent 66%),
+      radial-gradient(ellipse at 80% 125%, #d49a5c 55%, transparent 60%);
+    box-shadow: 0 -8px 30px rgba(232, 181, 119, 0.55);
+  }
+  .photo-sahara::before {
+    content: "";
+    position: absolute;
+    top: 18%;
+    left: 0;
+    right: 0;
+    height: 26px;
+    background-image: radial-gradient(rgba(255,255,255,0.85) 1px, transparent 1.6px);
+    background-size: 22px 14px;
+    opacity: 0.8;
+  }
+
+  .card-body {
+    padding: 26px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .meta .date { font-weight: 600; }
+  .meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-soft); }
+  .meta .read { color: var(--accent); font-weight: 600; }
+
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .card h3 a {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .card h3 a:hover { color: var(--accent-deep); }
+
+  .card p {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    flex: 1;
+  }
+
+  .read-more {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+  .read-more:hover { color: var(--accent-deep); gap: 14px; }
+
+  /* ---------- Quote strip ---------- */
+  .quote {
+    background: var(--ink);
+    color: #f4efe7;
+    text-align: center;
+    padding: 70px 6vw;
+  }
+  .quote blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.4;
+    max-width: 720px;
+    margin: 0 auto 18px;
+  }
+  .quote cite {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 0.75rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #b9c3c9;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 34px 6vw;
+    border-top: 1px solid var(--line);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  footer .flogo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  footer a { color: var(--ink-soft); text-decoration: none; margin-left: 22px; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+    nav a { margin-left: 18px; }
+  }
+  @media (max-width: 560px) {
+    header { flex-direction: column; gap: 14px; }
+    nav a { margin: 0 9px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">Wandering <em>Inks</em></a>
+  <nav>
+    <a href="#">Journal</a>
+    <a href="#">Destinations</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="kicker">A Travel Journal by Mara Ellison</div>
+  <h1>Stories carried home, <em>one page at a time</em></h1>
+  <p>Field notes from the edges of the map — slow travel, small towns, and the people who make wandering worth it.</p>
+  <div class="orn"></div>
+</section>
+
+<main class="posts">
+  <div class="section-label">
+    <h2>Recent Entries</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="photo photo-lisbon">
+        <span class="badge">Lisbon, Portugal</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="date">Oct 12, 2025</span>
+          <span class="dot"></span>
+          <span class="read">8 min read</span>
+      </div>
+        <h3><a href="#">Tilting Up: A Slow Week Among Lisbon's Ramparts</a></h3>
+        <p>The city tilts on its own axis, and my compass went with it. Between tram 28, warm pastel de nata, and a
+        fado that lasted until the last of the street lights, I stopped trying to see everything and finally saw a lot.</p>
+        <a class="read-more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="photo photo-hokkaido">
+        <span class="badge">Hokkaido, Japan</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="date">Sep 28, 2025</span>
+          <span class="dot"></span>
+          <span class="read">11 min read</span>
+        </div>
+        <h3><a href="#">Snow Before October: Late Light in Hokkaido</a></h3>
+        <p>Whitefields in late September, steam rising from convenience-store onigiri, and a driver who chatted for two
+        hours about the first blizzard of the year. Hokkaido in fall is a secret most guides never find.</p>
+        <a class="read-more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="photo photo-sahara">
+        <span class="badge">Merrachuchi, Morocco</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="date">Sep 9, 2025</span>
+          <span class="dot"></span>
+          <span class="read">9 min read</span>
+        </div>
+        <h3><a href="#">Tea at a Thousand Meters of Stars</a></h3>
+        <p>Three cups of mint tea, poured high and slow, and a night sky so dense I developed the phantom feeling that
+        standing on the ground was the mistake. Notes from three nights in the Saharan dunes near Tiznit.</p>
+        <a class="read-more" href="#">Read the story <span>→</span></a>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<section class="quote">
+  <blockquote>"You don't travel to escape your life, but to keep your life from escaping you."</blockquote>
+  <cite>— entry from the journal, 2016</cite>
+</section>
+
+<footer>
+  <span class="flogo">Wandering Inks</span>
+  <span>© 2025 Mara Ellison. Written on trains, mostly.</span>
+  <span>
+    <a href="#">RSS</a>
+    <a href="#">Instagram</a>
+    <a href="#">Newsletter</a>
+  </span>
+</footer>
+
+</body>
+</html>

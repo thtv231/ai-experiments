@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.pyc
+01-frontend-aesthetics/results/cache/
+01-frontend-aesthetics/results/measured.json

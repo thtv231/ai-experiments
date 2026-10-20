@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neighbourhood Bakery • Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #d2691e;      /* chocolate */
+    --secondary: #f5e1a4;    /* pastry cream */
+    --bg: #fff8f0;           /* warm parchment */
+    --text: #3e2723;         /* dark brown */
+    --accent: #c44d58;       /* berry */
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Merriweather', serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:2rem;
+    line-height:1.5;
+  }
+  h1{
+    font-family:'Bebas Neue', cursive;
+    font-size:4rem;
+    color:var(--primary);
+    text-align:center;
+    margin-bottom:1rem;
+  }
+  .dashboard{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap:2rem;
+  }
+  .card{
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+    padding:1.5rem;
+  }
+  .card h2{
+    font-family:'Bebas Neue', cursive;
+    font-size:2rem;
+    color:var(--primary);
+    margin-bottom:.5rem;
+  }
+  .revenue{
+    font-size:3rem;
+    font-weight:700;
+    font-family:'Fira Code', monospace;
+    color:var(--accent);
+    text-align:center;
+    margin-top:.5rem;
+  }
+  .best-sellers ul{
+    list-style:none;
+    margin-top:.5rem;
+  }
+  .best-sellers li{
+    font-size:1.2rem;
+    margin:0.4rem 0;
+    display:flex;
+    align-items:center;
+  }
+  .best-sellers li::before{
+    content:"🍞";
+    margin-right:.6rem;
+  }
+  .chart{
+    margin-top:1rem;
+  }
+  .bars{
+    display:flex;
+    align-items:flex-end;
+    gap:.5rem;
+    height:180px;
+    padding-bottom:1.5rem;
+    border-left:2px solid var(--primary);
+    border-bottom:2px solid var(--primary);
+    position:relative;
+  }
+  .bars::before{
+    content:"$";
+    position:absolute;
+    left:-1.5rem;
+    bottom:0;
+    font-size:0.9rem;
+    color:var(--primary);
+  }
+  .bar{
+    flex:1;
+    background:var(--secondary);
+    border-radius:4px 4px 0 0;
+    position:relative;
+    transition:background .3s;
+  }
+  .bar:hover{
+    background:var(--accent);
+  }
+  .bar span{
+    position:absolute;
+    bottom:100%;
+    left:50%;
+    transform:translateX(-50%);
+    font-family:'Fira Code', monospace;
+    font-size:0.9rem;
+    margin-bottom:4px;
+    color:var(--primary);
+  }
+  .day-labels{
+    display:flex;
+    justify-content:space-between;
+    margin-top:.5rem;
+    font-size:0.9rem;
+    color:var(--primary);
+  }
+  @media (max-width:600px){
+    h1{font-size:3rem;}
+    .card h2{font-size:1.6rem;}
+  }
+</style>
+</head>
+<body>
+  <h1>Neighbourhood Bakery</h1>
+  <section class="dashboard">
+    <!-- Today's Revenue -->
+    <article class="card today">
+      <h2>Today's Revenue</h2>
+      <div class="revenue">$1,245</div>
+    </article>
+
+    <!-- Best Sellers -->
+    <article class="card best-sellers">
+      <h2>Best Sellers</h2>
+      <ul>
+        <li>Chocolate Croissant</li>
+        <li>Blueberry Muffin</li>
+        <li>Almond Scone</li>
+        <li>Cinnamon Roll</li>
+      </ul>
+    </article>
+
+    <!-- Weekly Revenue Chart -->
+    <article class="card weekly-chart">
+      <h2>Weekly Revenue</h2>
+      <div class="chart">
+        <div class="bars">
+          <!-- Data: Mon 800, Tue 950, Wed 720, Thu 1100, Fri 1450, Sat 1900, Sun 1300 -->
+          <div class="bar" style="height:42%;"><span>$800</span></div>
+          <div class="bar" style="height:50%;"><span>$950</span></div>
+          <div class="bar" style="height:38%;"><span>$720</span></div>
+          <div class="bar" style="height:58%;"><span>$1,100</span></div>
+          <div class="bar" style="height:76%;"><span>$1,450</span></div>
+          <div class="bar" style="height:100%;"><span>$1,900</span></div>
+          <div class="bar" style="height:68%;"><span>$1,300</span></div>
+        </div>
+        <div class="day-labels">
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+          <span>Sun</span>
+        </div>
+      </div>
+    </article>
+  </section>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wanderer's Journal – Travel Writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Colour palette */
+  --bg-primary: #0a1f44;          /* Deep navy */
+  --bg-gradient: radial-gradient(circle at 30% 30%, #0a1f44 0%, #1b2c5e 70%, #0a1f44);
+  --accent: #ff6b35;             /* Sunset orange */
+  --accent2: #2ec4b6;            /* Teal */
+  --text-primary: #f0f4f8;       /* Light gray */
+  --text-muted: #a0b3c9;         /* Muted blue-gray */
+
+  /* Typography */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Merriweather', serif;
+
+  /* Spacing */
+  --gap: 1.5rem;
+}
+
+/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+header {
+  padding: clamp(2rem, 5vw, 4rem) var(--gap);
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(10,31,68,.85), transparent);
+}
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 700;
+  margin-bottom: .4rem;
+  color: var(--accent);
+}
+h2 {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: var(--gap);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Posts grid */
+.posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--gap);
+  margin-top: var(--gap);
+}
+
+/* Card */
+.post-card {
+  background: rgba(255,255,255,.08);
+  border-radius: .8rem;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.12);
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+/* Staggered delays */
+.post-card:nth-child(1) { animation-delay: 0.2s; }
+.post-card:nth-child(2) { animation-delay: 0.4s; }
+.post-card:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Image placeholder */
+.post-card::before {
+  content: "";
+  display: block;
+  height: 150px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+@keyframes gradientShift {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Card content */
+.post-content {
+  padding: var(--gap);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.post-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: .5rem;
+  color: var(--accent);
+}
+.post-content p {
+  flex: 1;
+  font-size: .95rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.post-content .meta {
+  font-size: .8rem;
+  color: var(--accent2);
+  text-align: right;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: .85rem;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Wanderer's Journal</h1>
+  <h2>Stories from the road, one mile at a time</h2>
+</header>
+
+<main>
+  <section class="posts">
+    <article class="post-card">
+      <div class="post-content">
+        <h3>Midnight in Marrakech</h3>
+        <p>Wandering the illuminated souks under a canopy of stars, I discovered a hidden tea house where the scent of jasmine mingled with the rhythm of distant drums.</p>
+        <div class="meta">Oct 12, 2026</div>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-content">
+        <h3>Chasing the Northern Lights in Tromsø</h3>
+        <p>The sky erupted in curtains of emerald and violet as we trekked across frozen fjords, each flash painting a fleeting masterpiece across the Arctic night.</p>
+        <div class="meta">Sep 27, 2026</div>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-content">
+        <h3>Sunrise over the Patagonian Glaciers</h3>
+        <p>At dawn, the glaciers glowed pink, reflecting off crystal‑clear lakes while the Andes stood guard—an untouched tableau that stole my breath away.</p>
+        <div class="meta">Aug 15, 2026</div>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  © 2026 Wanderer's Journal – All rights reserved.
+</footer>
+</body>
+</html>

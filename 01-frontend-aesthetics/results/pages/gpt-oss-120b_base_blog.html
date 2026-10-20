@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Travel Tales – Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary:#2c3e50;
+        --secondary:#34495e;
+        --accent:#e67e22;
+        --bg:#f5f5f5;
+        --text:#333;
+        --card-bg:#fff;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+    }
+    a { text-decoration:none; color:var(--accent); }
+    header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color:#fff;
+        padding:2rem 1rem;
+        text-align:center;
+    }
+    header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size:2.5rem;
+        margin-bottom:0.3rem;
+    }
+    header p {
+        font-size:1.1rem;
+        opacity:0.9;
+    }
+    nav {
+        margin-top:1rem;
+    }
+    nav a {
+        margin:0 .8rem;
+        color:#fff;
+        font-weight:600;
+    }
+    main {
+        max-width:1200px;
+        margin:2rem auto;
+        padding:0 1rem;
+    }
+    .posts {
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+        gap:2rem;
+    }
+    .post {
+        background: var(--card-bg);
+        border-radius:8px;
+        overflow:hidden;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        display:flex;
+        flex-direction:column;
+    }
+    .post-image {
+        height:180px;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:4rem;
+    }
+    .post-content {
+        padding:1rem;
+        flex:1;
+        display:flex;
+        flex-direction:column;
+    }
+    .post-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size:1.5rem;
+        margin-bottom:0.4rem;
+        color: var(--primary);
+    }
+    .post-content .meta {
+        font-size:0.9rem;
+        color:#777;
+        margin-bottom:0.8rem;
+    }
+    .post-content p {
+        flex:1;
+        margin-bottom:1rem;
+        color:#555;
+    }
+    .post-content .read-more {
+        align-self:flex-start;
+        font-weight:600;
+        color:var(--accent);
+    }
+    footer {
+        background: var(--primary);
+        color:#fff;
+        text-align:center;
+        padding:1rem 0;
+        font-size:0.9rem;
+    }
+    @media (max-width:600px) {
+        header h1 {font-size:2rem;}
+        .post-image {height:140px;}
+    }
+</style>
+</head>
+<body>
+<header>
+    <h1>Travel Tales</h1>
+    <p>Wander. Write. Wonder.</p>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Destinations</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<main>
+    <section class="posts">
+        <!-- Post 1 -->
+        <article class="post">
+            <div class="post-image">✈️</div>
+            <div class="post-content">
+                <h2>Chasing Sunsets in Santorini</h2>
+                <div class="meta">July 12, 2024 • Greece</div>
+                <p>From the white‑washed alleys to the iconic blue domes, Santorini offers a palette of colors that transform with every sunset. Here’s how I caught the perfect golden hour.</p>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="post">
+            <div class="post-image">🌍</div>
+            <div class="post-content">
+                <h2>Backpacking the Andes: A 10‑Day Trek</h2>
+                <div class="meta">June 28, 2024 • Peru</div>
+                <p>The Andes challenge every step, but the vistas make the effort worth it. I share gear tips, trail highlights, and the unforgettable night under the Milky Way.</p>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="post">
+            <div class="post-image">🗺️</div>
+            <div class="post-content">
+                <h2>Street Food Secrets of Bangkok</h2>
+                <div class="meta">June 15, 2024 • Thailand</div>
+                <p>From sizzling wok dishes to sweet mango sticky rice, Bangkok’s street stalls are a culinary adventure. Discover my top five must‑try bites.</p>
+                <a href="#" class="read-more">Read more →</a>
+            </div>
+        </article>
+    </section>
+</main>
+
+<footer>
+    © 2024 Travel Tales • All rights reserved.
+</footer>
+</body>
+</html>

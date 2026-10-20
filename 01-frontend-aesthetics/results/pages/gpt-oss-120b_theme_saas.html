@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Huddle – Schedule Team Meetings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Vintage letterpress theme */
+        :root {
+            --cream: #fdf5e6;
+            --ink: #000000;
+            --vermilion: #d9381e;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+            padding: 0 1rem;
+        }
+        header, main, footer {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        h2 {
+            font-size: 2rem;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+        .accent {
+            color: var(--vermilion);
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--vermilion);
+            background: var(--cream);
+            color: var(--vermilion);
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .btn:hover {
+            background: var(--vermilion);
+            color: var(--cream);
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 2rem 0;
+        }
+        .features, .testimonials {
+            display: grid;
+            gap: 2rem;
+        }
+        @media (min-width: 600px) {
+            .features, .testimonials {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .feature, .testimonial {
+            padding: 1rem 0;
+        }
+        .feature h3, .testimonial h3 {
+            margin-bottom: 0.5rem;
+        }
+        footer {
+            font-size: 0.875rem;
+            text-align: center;
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Huddle</h1>
+        <h2 class="accent">Bring your team together, on time, every time.</h2>
+        <p>Huddle is a simple, reliable app that helps you schedule and manage team meetings without the hassle.</p>
+        <a href="#signup" class="btn">Get Started</a>
+    </header>
+
+    <hr>
+
+    <section class="features">
+        <div class="feature">
+            <h3 class="accent">Smart Scheduling</h3>
+            <p>Find the perfect time slot for every participant with our intelligent availability engine.</p>
+        </div>
+        <div class="feature">
+            <h3 class="accent">Automatic Reminders</h3>
+            <p>Never miss a meeting again – Huddle sends timely email and push notifications.</p>
+        </div>
+        <div class="feature">
+            <h3 class="accent">Shared Agendas</h3>
+            <p>Prepare and distribute meeting agendas in advance, keeping everyone on the same page.</p>
+        </div>
+        <div class="feature">
+            <h3 class="accent">Integrations</h3>
+            <p>Connect Huddle with your calendar, Slack, and project tools for seamless workflow.</p>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="testimonials">
+        <div class="testimonial">
+            <h3 class="accent">“A lifesaver for our remote team.”</h3>
+            <p>— Maya L., Product Lead</p>
+        </div>
+        <div class="testimonial">
+            <h3 class="accent">“Scheduling used to be a nightmare; now it’s a breeze.”</h3>
+            <p>— Carlos R., Marketing Manager</p>
+        </div>
+    </section>
+
+    <hr>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Huddle. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Insert current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

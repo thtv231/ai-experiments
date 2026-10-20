@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bakery Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto&display=swap" rel="stylesheet">
+<style>
+    /* Vintage letterpress theme */
+    :root{
+        --cream:#fdf8e4;
+        --ink:#000000;
+        --accent:#e34234; /* vermilion */
+        --thin:#cccccc;
+        --font-serif:"Merriweather", serif;
+        --font-sans:"Roboto", sans-serif;
+    }
+    *{
+        box-sizing:border-box;
+        margin:0;
+        padding:0;
+    }
+    body{
+        font-family:var(--font-sans);
+        background:var(--cream);
+        color:var(--ink);
+        line-height:1.6;
+        padding:2rem;
+    }
+    h1, h2{
+        font-family:var(--font-serif);
+        margin-bottom:0.5rem;
+        color:var(--ink);
+    }
+    h1{
+        font-size:2rem;
+        border-left:4px solid var(--accent);
+        padding-left:0.5rem;
+    }
+    h2{
+        font-size:1.4rem;
+        color:var(--accent);
+    }
+    .dashboard{
+        max-width:800px;
+        margin:0 auto;
+    }
+    section{
+        padding:1rem 0;
+    }
+    hr{
+        border:none;
+        height:1px;
+        background:var(--thin);
+        margin:1rem 0;
+    }
+    .revenue{
+        font-size:1.8rem;
+        font-weight:bold;
+    }
+    .best-sellers ul{
+        list-style:none;
+        columns:2;
+        column-gap:2rem;
+    }
+    .best-sellers li{
+        margin-bottom:0.4rem;
+    }
+    .chart{
+        margin-top:1rem;
+    }
+    .bar{
+        display:flex;
+        align-items:center;
+        margin-bottom:0.5rem;
+    }
+    .bar-label{
+        width:80px;
+        font-size:0.9rem;
+    }
+    .bar-bg{
+        flex:1;
+        background:#eee;
+        height:20px;
+        position:relative;
+        overflow:hidden;
+        border:1px solid var(--thin);
+    }
+    .bar-fill{
+        height:100%;
+        background:var(--accent);
+        width:0%; /* will be set inline */
+        transition:width 0.6s ease-out;
+    }
+    .bar-value{
+        width:50px;
+        text-align:right;
+        font-size:0.9rem;
+        margin-left:0.5rem;
+    }
+</style>
+</head>
+<body>
+<div class="dashboard">
+    <h1>Neighbourhood Bakery Dashboard</h1>
+
+    <section class="today">
+        <h2>Today's Revenue</h2>
+        <p class="revenue">$1,240</p>
+    </section>
+
+    <hr>
+
+    <section class="best-sellers">
+        <h2>Best Sellers</h2>
+        <ul>
+            <li>🥐  Croissant – 120 sold</li>
+            <li>🍞  Sourdough Loaf – 95 sold</li>
+            <li>🥖  Baguette – 80 sold</li>
+            <li>🍰  Lemon Tart – 65 sold</li>
+            <li>🍪  Chocolate Chip Cookie – 150 sold</li>
+            <li>🥧  Apple Pie – 45 sold</li>
+        </ul>
+    </section>
+
+    <hr>
+
+    <section class="weekly-chart">
+        <h2>Weekly Revenue (Past 7 Days)</h2>
+        <div class="chart">
+            <div class="bar">
+                <div class="bar-label">Mon</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:45%;"></div></div>
+                <div class="bar-value">$450</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Tue</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:55%;"></div></div>
+                <div class="bar-value">$550</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Wed</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:60%;"></div></div>
+                <div class="bar-value">$600</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Thu</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:50%;"></div></div>
+                <div class="bar-value">$500</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Fri</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:70%;"></div></div>
+                <div class="bar-value">$700</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Sat</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:80%;"></div></div>
+                <div class="bar-value">$800</div>
+            </div>
+            <div class="bar">
+                <div class="bar-label">Sun</div>
+                <div class="bar-bg"><div class="bar-fill" style="width:65%;"></div></div>
+                <div class="bar-value">$650</div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

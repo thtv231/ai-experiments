@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Sales Dashboard</title>
+    <style>
+        :root {
+            --main-color: #f6c20e;
+            --accent-color: #ef5a28;
+            --background-color: #fdf6e7;
+            --text-color: #3c3c3c;
+            --font-family-display: 'Bebas Neue', cursive;
+            --font-family-body: 'Open Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family-body);
+            margin: 0;
+            background: linear-gradient(135deg, #fdf6e7 30%, #f3e9d3 100%);
+            color: var(--text-color);
+        }
+
+        h1 {
+            font-family: var(--font-family-display);
+            font-size: 3rem;
+            color: var(--main-color);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .revenue, .bestsellers {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .revenue {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .best-seller-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .best-seller-item {
+            background: var(--accent-color);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            animation: slideIn 1s ease forwards;
+            opacity: 0;
+            animation-delay: calc(0.1s * var(--index));
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .chart {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .chart div {
+            background: var(--main-color);
+            height: 100px;
+            border-radius: 5px;
+            position: relative;
+            opacity: 0;
+            animation: increaseHeight 1s forwards;
+            animation-delay: calc(0.1s * var(--index));
+        }
+
+        @keyframes increaseHeight {
+            from {
+                height: 0;
+            }
+            to {
+                height: 100px;
+            }
+        }
+
+        .bar-1 {
+            height: 60px;
+            animation-delay: 0.1s;
+        }
+
+        .bar-2 {
+            height: 80px;
+            animation-delay: 0.2s;
+        }
+
+        .bar-3 {
+            height: 40px;
+            animation-delay: 0.3s;
+        }
+
+        .bar-4 {
+            height: 30px;
+            animation-delay: 0.4s;
+        }
+
+        .bar-5 {
+            height: 70px;
+            animation-delay: 0.5s;
+        }
+
+        .bar-6 {
+            height: 50px;
+            animation-delay: 0.6s;
+        }
+
+        .bar-7 {
+            height: 20px;
+            animation-delay: 0.7s;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bakery Sales Dashboard</h1>
+        <div class="revenue">Today's Revenue: $350</div>
+        <div class="bestsellers">
+            <h2>Best Sellers</h2>
+            <ul class="best-seller-list">
+                <li class="best-seller-item" style="--index: 1;">Chocolate Croissant</li>
+                <li class="best-seller-item" style="--index: 2;">Red Velvet Cupcake</li>
+                <li class="best-seller-item" style="--index: 3;">Banana Bread</li>
+                <li class="best-seller-item" style="--index: 4;">Sourdough Loaf</li>
+                <li class="best-seller-item" style="--index: 5;">Fruit Tart</li>
+            </ul>
+        </div>
+        <div class="chart">
+            <div class="bar bar-1" style="--index: 1;"></div>
+            <div class="bar bar-2" style="--index: 2;"></div>
+            <div class="bar bar-3" style="--index: 3;"></div>
+            <div class="bar bar-4" style="--index: 4;"></div>
+            <div class="bar bar-5" style="--index: 5;"></div>
+            <div class="bar bar-6" style="--index: 6;"></div>
+            <div class="bar bar-7" style="--index: 7;"></div>
+        </div>
+    </div>
+</body>
+
+</html>
